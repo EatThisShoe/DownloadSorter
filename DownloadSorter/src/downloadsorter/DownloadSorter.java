@@ -15,7 +15,9 @@ public class DownloadSorter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Settings settings = new Settings();
+        MainGUI mainWindow = settings.getGUI();
+        Thread GUI = new Thread(mainWindow);
+        GUI.start();
     }
-    
 }
