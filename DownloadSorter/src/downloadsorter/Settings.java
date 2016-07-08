@@ -6,16 +6,18 @@
 package downloadsorter;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import static java.nio.file.StandardOpenOption.CREATE;
 
 /**
  *
  * @author Eric
  */
 public class Settings {
-    static final Path _settingsPath = Paths.get("settings", "settings.txt");
+    static final Path _settingsPath = Paths.get("settings.txt").toAbsolutePath();
     private MainGUI GUI;
     private Path sourceFolder;
     
@@ -36,14 +38,20 @@ public class Settings {
 
             } catch(Exception e) {System.err.format("IOException: %s%n", e);}
         } else { //defaults
-            sourceFolder = Paths.get("D:\\torrents");
+            System.out.println("settings file not found");
+            //sourceFolder = Paths.get("D:\\torrents");
         }
         
         
     }
     
     public void writeSettingsFile() {
-        
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(_settingsPath, CREATE);
+            
+            writer.write(sourceFolder.toString());
+            writer.newLine();
+        } catch(Exception e) {System.err.format("IOException: %s%n", e);}
     }
     
     public void readSettingsFromGUI() {

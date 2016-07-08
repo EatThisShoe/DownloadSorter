@@ -29,6 +29,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     private void initComponents() {
 
         startButton = new javax.swing.JButton();
+        lblSourceFolder = new javax.swing.JLabel();
+        txtSourceFolder = new javax.swing.JTextField();
+        btnSaveAndExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -39,20 +42,42 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        lblSourceFolder.setText("Source Folder:");
+
+        btnSaveAndExit.setText("Save & Exit");
+        btnSaveAndExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveAndExitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(172, 172, 172)
-                .addComponent(startButton)
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addComponent(lblSourceFolder)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(startButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSaveAndExit))
+                    .addComponent(txtSourceFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
-                .addComponent(startButton)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSourceFolder)
+                    .addComponent(txtSourceFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startButton)
+                    .addComponent(btnSaveAndExit))
                 .addContainerGap())
         );
 
@@ -65,6 +90,12 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         Thread sortLoop = new Thread(sortingLoop);
         sortLoop.start();
     }//GEN-LAST:event_startButtonActionPerformed
+
+    private void btnSaveAndExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveAndExitActionPerformed
+        settings.writeSettingsFile();
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_btnSaveAndExitActionPerformed
 
 
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -95,6 +126,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSaveAndExit;
+    private javax.swing.JLabel lblSourceFolder;
     private javax.swing.JButton startButton;
+    private javax.swing.JTextField txtSourceFolder;
     // End of variables declaration//GEN-END:variables
 }
