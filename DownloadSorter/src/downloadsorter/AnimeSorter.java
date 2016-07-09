@@ -9,7 +9,7 @@ import java.util.*;
 public class AnimeSorter implements Runnable {
     Path sourceFolder;
     
-    public AnimeSorter(SorterInitializers init) {
+    public AnimeSorter(Settings init) {
         sourceFolder = init.sourceFolder;
     }
 

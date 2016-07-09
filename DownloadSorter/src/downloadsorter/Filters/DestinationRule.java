@@ -3,19 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter;
+package downloadsorter.Filters;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
 
 /**
  *
  * @author Eric
  */
-public class SorterInitializers {
-    public final Path sourceFolder;
-    
-    public SorterInitializers(Settings s) {
-        sourceFolder = s.getSourceFolder();
-    }
+public interface DestinationRule {
+    public void moveFiles(List<Path> l);
 }

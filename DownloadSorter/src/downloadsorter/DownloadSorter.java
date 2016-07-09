@@ -15,7 +15,7 @@ public class DownloadSorter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Settings settings = new Settings();
+        SettingsManager settings = new SettingsManager();
         MainGUI mainWindow = settings.getGUI();
         Thread GUI = new Thread(mainWindow);
         GUI.start();

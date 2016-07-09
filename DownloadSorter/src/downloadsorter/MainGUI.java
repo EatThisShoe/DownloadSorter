@@ -10,11 +10,11 @@ package downloadsorter;
  * @author Eric
  */
 public class MainGUI extends javax.swing.JFrame implements Runnable {
-    Settings settings;
+    SettingsManager settings;
     /**
      * Creates new form MainGUI
      */
-    public MainGUI(Settings s) {
+    public MainGUI(SettingsManager s) {
         settings = s;
         initComponents();
     }
@@ -85,7 +85,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        SorterInitializers inits = new SorterInitializers(settings);
+        Settings inits = new Settings(settings);
         AnimeSorter sortingLoop = new AnimeSorter(inits);
         Thread sortLoop = new Thread(sortingLoop);
         sortLoop.start();
