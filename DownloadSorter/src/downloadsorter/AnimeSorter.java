@@ -2,8 +2,8 @@ package downloadsorter;
 
 
 
+import downloadsorter.Filters.AnimeEpisode;
 import java.nio.file.*;
-import java.io.*;
 import java.util.*;
 
 public class AnimeSorter implements Runnable {
@@ -14,13 +14,13 @@ public class AnimeSorter implements Runnable {
     }
 
     public void run() {
-        List<FileName> episodeList = new ArrayList<>();
-        List<FileName> animeList = new ArrayList<>();
+        List<AnimeEpisode> episodeList = new ArrayList<>();
+        List<AnimeEpisode> animeList = new ArrayList<>();
        
         try (DirectoryStream<Path> unsortedFiles = Files.newDirectoryStream(sourceFolder)){
             for(Path afile: unsortedFiles){
                 if(Files.isReadable(afile))
-                    episodeList.add(new FileName(afile));
+                    episodeList.add(new AnimeEpisode(afile));
             }
         } catch(Exception e) {
             System.out.println(e.getMessage());
@@ -29,20 +29,20 @@ public class AnimeSorter implements Runnable {
         animeList = listAnimeToMove(episodeList);
         moveDuplicates(animeList);
        
-        for(FileName fileout: animeList)
+        for(AnimeEpisode fileout: animeList)
            System.out.println(fileout.toString());
     }
     
-    public List<FileName> listAnimeToMove(List<FileName> l) {
-        List<FileName> returnedList = new ArrayList<>();
+    public List<AnimeEpisode> listAnimeToMove(List<AnimeEpisode> l) {
+        List<AnimeEpisode> returnedList = new ArrayList<>();
         for(int i = 0; i < l.size(); i++) {
-            FileName eachFile = l.get(i);
+            AnimeEpisode eachFile = l.get(i);
             for (int n = 0; n < l.size(); n++) {
-                FileName sameSeries = l.get(n);
-                if (eachFile.seriesName.equals(sameSeries.seriesName)
-                    && eachFile.location != sameSeries.location){
+                AnimeEpisode sameSeries = l.get(n);
+                if (eachFile.getName().equals(sameSeries.getName())
+                    && eachFile.getPath() != sameSeries.getPath()){
                     if (!Files.isDirectory(eachFile.location)){
-                        if (eachFile.hasFansubFormat){
+                        if (eachFile.isMatch()){
                             returnedList.add(l.get(i));
                         }
                     } else {
@@ -54,16 +54,16 @@ public class AnimeSorter implements Runnable {
         return returnedList;
     }
     
-    public void moveDuplicates(List<FileName> l) {
-        for (FileName f: l){
-            Path seriesFolder = Paths.get(sourceFolder + "\\" + f.seriesName);
+    public void moveDuplicates(List<AnimeEpisode> l) {
+        for (AnimeEpisode f: l){
+            Path seriesFolder = Paths.get(sourceFolder + "\\" + f.getName());
             if(!Files.exists(seriesFolder)) {
                 try {Files.createDirectory(seriesFolder);}
                 catch(Exception e) {System.out.println(e.getMessage());}
             }
-            String destination = f.location.getParent()+ "\\" + f.seriesName + "\\" + f.location.getFileName();
+            String destination = f.getPath().getParent()+ "\\" + f.getName() + "\\" + f.getPath().getFileName();
             Path inDir = Paths.get(destination);
-            try {Files.move(f.location, inDir);}
+            try {Files.move(f.getPath(), inDir);}
             catch(Exception e) {System.out.println(e.getMessage());}
         }
     }

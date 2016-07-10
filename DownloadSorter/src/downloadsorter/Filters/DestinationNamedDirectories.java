@@ -5,13 +5,15 @@
  */
 package downloadsorter.Filters;
 
-import java.nio.file.Path;
 import java.util.List;
 
 /**
  *
  * @author Eric
  */
-public interface DestinationRule {
-    public void moveFiles(List<FileMetaData> l);
+public class DestinationNamedDirectories {
+    
+    DestinationNamedDirectories(List<FileMetaData> l) {
+        
+    }
 }

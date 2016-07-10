@@ -6,12 +6,13 @@
 package downloadsorter.Filters;
 
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  *
  * @author Eric
  */
-public interface DestinationRule {
-    public void moveFiles(List<FileMetaData> l);
+public interface FileMetaData {
+    public Path getPath();
+    public String getName();
+    public boolean isMatch();
 }
