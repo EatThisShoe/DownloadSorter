@@ -17,7 +17,7 @@ import static java.nio.file.StandardOpenOption.CREATE;
  * @author Eric
  */
 public class SettingsManager {
-    static final Path _settingsPath = Paths.get("settings.txt").toAbsolutePath();
+    static final Path _settingsPath = Paths.get("settings.txt");
     private MainGUI GUI;
     private Path sourceFolder;
     

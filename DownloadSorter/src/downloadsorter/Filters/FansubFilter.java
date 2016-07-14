@@ -17,7 +17,7 @@ public class FansubFilter implements FilterRule {
 
     @Override
     public List<FileMetaData> filterFiles(List<Path> l) {
-        List<AnimeEpisode> fansubs = l.stream()
+        List<FileMetaData> fansubs = l.stream()
                     .map(AnimeEpisode::new)
                     .collect(Collectors.toList());
         

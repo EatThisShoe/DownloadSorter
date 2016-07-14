@@ -5,9 +5,14 @@
  */
 package downloadsorter.Filters;
 
+import java.io.IOException;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileVisitResult;
+import static java.nio.file.FileVisitResult.CONTINUE;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +39,36 @@ public class DirectorySource implements SourceRule {
     @Override
     public List<Path> getFiles() {
         List<Path> filesFound = new ArrayList<>();
+        PathGatherer walker = new PathGatherer();
         
         sourceFolders.stream().forEach(dir -> {
-            try (DirectoryStream<Path> unsortedFiles = Files.newDirectoryStream(dir)){
-                unsortedFiles.forEach(p -> {if(Files.isReadable(p)) filesFound.add(p);});
+            try {
+                Files.walkFileTree(dir, walker);
+                walker.getList().stream()
+                        .forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(sourceFile);});
             } catch(Exception e) {System.out.println(e.getMessage());}
         });
         return filesFound;
     }
     
+}
+
+class PathGatherer extends SimpleFileVisitor<Path> {
+    List<Path> found = new ArrayList<>();
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
+        found.add(file);
+        return CONTINUE;
+    }
+    
+    @Override
+    public FileVisitResult visitFileFailed(Path file, IOException exc) {
+        System.out.println(exc.getMessage());
+        return CONTINUE;
+    }
+    
+    public List<Path> getList() {
+        return found;
+    }
 }

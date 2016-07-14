@@ -5,15 +5,33 @@
  */
 package downloadsorter.Filters;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
  *
  * @author Eric
  */
-public class DestinationNamedDirectories {
+public class DestinationNamedDirectories implements DestinationRule {
+    Path baseDirectory;
     
-    DestinationNamedDirectories(List<FileMetaData> l) {
-        
+    DestinationNamedDirectories(Path p) {
+        baseDirectory = p;
+    }
+
+    @Override
+    public void moveFiles(List<FileMetaData> l) {
+        for (FileMetaData file: l){
+            Path seriesFolder = baseDirectory.resolve(file.getName());
+            if(!Files.exists(seriesFolder)) {
+                try {Files.createDirectory(seriesFolder);}
+                catch(Exception e) {System.out.println(e.getMessage());}
+            }
+            Path inDir = seriesFolder.resolve(file.getPath().getFileName());
+            try {Files.move(file.getPath(), inDir);}
+            catch(Exception e) {System.out.println(e.getMessage());}
+        }
     }
 }
