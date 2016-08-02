@@ -5,8 +5,9 @@
  */
 package downloadsorter;
 
-import java.io.BufferedReader;
+import downloadsorter.Filters.Filter;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,40 +20,27 @@ import static java.nio.file.StandardOpenOption.CREATE;
 public class SettingsManager {
     static final Path _settingsPath = Paths.get("settings.txt");
     private MainGUI GUI;
-    private Path sourceFolder;
+    private Settings settings;
     
-    SettingsManager() {
+    public SettingsManager() {
         GUI = new MainGUI(this);
-        readSettingsFile();
-    }
-    
-    public final void readSettingsFile() {
-        if (Files.exists(_settingsPath)) {
-            try {
-                BufferedReader reader = Files.newBufferedReader(_settingsPath);
-                String setting = null;
-
-                if ((setting = reader.readLine()) != null) {
-                    sourceFolder = Paths.get(setting);
-                }
-
-            } catch(Exception e) {System.err.format("IOException: %s%n", e);}
-        } else { //defaults
-            System.out.println("settings file not found");
-            //sourceFolder = Paths.get("D:\\torrents");
-        }
-        
-        
+        SettingsReader reader = new SettingsReader(_settingsPath);
+        settings = reader.readSettingsFile();
     }
     
     public void writeSettingsFile() {
         try {
             BufferedWriter writer = Files.newBufferedWriter(_settingsPath, CREATE);
-            
-            writer.write(sourceFolder.toString());
-            writer.newLine();
-        } catch(Exception e) {System.err.format("IOException: %s%n", e);}
+            settings.getFilters().stream()
+                    .forEach(filter ->  {writeFilter(filter, writer);});
+        } catch(Exception e) {System.err.format("IOException (creating settings writer): %s%n", e);}
     }
+    
+    void writeFilter(Filter f, BufferedWriter writer) {
+        try { writer.write(f.toString() + "\n");}
+        catch(Exception e) {System.err.format("IOException (writing line): %s%n", e);}
+    }
+    
     
     public void readSettingsFromGUI() {
         
@@ -61,20 +49,6 @@ public class SettingsManager {
     public Settings getSettings() {
         Settings init = new Settings(this);
         return init;
-    }
-
-    /**
-     * @return the sourceFolder
-     */
-    public Path getSourceFolder() {
-        return sourceFolder;
-    }
-
-    /**
-     * @param sourceFolder the sourceFolder to set
-     */
-    public void setSourceFolder(Path sourceFolder) {
-        this.sourceFolder = sourceFolder;
     }
 
     /**

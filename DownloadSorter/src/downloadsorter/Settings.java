@@ -5,21 +5,30 @@
  */
 package downloadsorter;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import downloadsorter.Filters.Filter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Eric
  */
 public class Settings {
-    public Path sourceFolder;
+    public List<Filter> filters;
     
     public Settings(SettingsManager s) {
-        sourceFolder = s.getSourceFolder();
+        filters = s.getSettings().getFilters();
+    }
+    
+    public Settings(List<Filter> ls) {
+        filters = ls;
     }
     
     public Settings() {
-        sourceFolder = Paths.get("");
+        filters = new ArrayList<>();
+    }
+    
+    public List<Filter> getFilters() {
+        return filters;
     }
 }

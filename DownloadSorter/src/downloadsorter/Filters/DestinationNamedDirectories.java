@@ -17,7 +17,11 @@ import java.util.List;
 public class DestinationNamedDirectories implements DestinationRule {
     Path baseDirectory;
     
-    DestinationNamedDirectories(Path p) {
+    public DestinationNamedDirectories(String[] fileInput) {
+        baseDirectory = Paths.get(fileInput[1]);
+    }
+    
+    public DestinationNamedDirectories(Path p) {
         baseDirectory = p;
     }
 
@@ -33,5 +37,12 @@ public class DestinationNamedDirectories implements DestinationRule {
             try {Files.move(file.getPath(), inDir);}
             catch(Exception e) {System.out.println(e.getMessage());}
         }
+    }
+    
+    @Override
+    public String toString() {
+        String s = "DestinationNamedDirectories,";
+        s.concat(baseDirectory.toString());
+        return s;
     }
 }

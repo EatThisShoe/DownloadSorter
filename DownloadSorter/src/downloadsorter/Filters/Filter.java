@@ -16,7 +16,7 @@ public class Filter {
     FilterRule filter;
     DestinationRule destination;
     
-    Filter(SourceRule s, FilterRule f, DestinationRule d) {
+    public Filter(SourceRule s, FilterRule f, DestinationRule d) {
         source = s;
         filter = f;
         destination = d;
@@ -26,5 +26,11 @@ public class Filter {
         List files = source.getFiles();
         List relevant = filter.filterFiles(files);
         destination.moveFiles(relevant);
+    }
+    
+    public String toString() {
+        return (source.toString() + "\n"
+                + filter.toString() + "\n"
+                + destination.toString() + "\n");
     }
 }

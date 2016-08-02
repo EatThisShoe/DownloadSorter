@@ -6,11 +6,11 @@
 package downloadsorter.Filters;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import static java.nio.file.FileVisitResult.CONTINUE;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -22,6 +22,14 @@ import java.util.List;
  */
 public class DirectorySource implements SourceRule {
     List<Path> sourceFolders = new ArrayList<>();
+    
+    public DirectorySource(String[] fromFile) {
+        for ( int i = 1; i < fromFile.length; i++) {
+            Path p = Paths.get(fromFile[i]);
+            if (Files.exists(p))
+                sourceFolders.add(p);
+        }
+    }
     
     public DirectorySource(Path p) {
         sourceFolders.add(p);
@@ -51,6 +59,14 @@ public class DirectorySource implements SourceRule {
         return filesFound;
     }
     
+    @Override
+    public String toString() {
+        String s = "DirectorySource,";
+        for(Path p: sourceFolders) {
+            s.concat(p.toString() + ",");
+        }
+        return s;
+    }
 }
 
 class PathGatherer extends SimpleFileVisitor<Path> {

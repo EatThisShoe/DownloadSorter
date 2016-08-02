@@ -26,4 +26,9 @@ public class FansubFilter implements FilterRule {
                     .filter(f -> f.isMatch()) //should remove directories after counting them for duplicates
                     .collect(Collectors.toList());
     }
+    
+    @Override
+    public String toString() {
+        return ("FansubFilter,");
+    }
 }

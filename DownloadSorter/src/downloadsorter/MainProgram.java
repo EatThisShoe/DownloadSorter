@@ -9,7 +9,7 @@ package downloadsorter;
  *
  * @author Eric
  */
-public class DownloadSorter {
+public class MainProgram {
 
     /**
      * @param args the command line arguments

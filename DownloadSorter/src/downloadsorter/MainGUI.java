@@ -86,7 +86,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         Settings inits = new Settings(settings);
-        AnimeSorter sortingLoop = new AnimeSorter(inits);
+        FileSorter sortingLoop = new FileSorter(inits);
         Thread sortLoop = new Thread(sortingLoop);
         sortLoop.start();
     }//GEN-LAST:event_startButtonActionPerformed
