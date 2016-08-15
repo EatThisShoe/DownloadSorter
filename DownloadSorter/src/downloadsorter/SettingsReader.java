@@ -38,15 +38,18 @@ public class SettingsReader {
             try {
                 lines = Files.readAllLines(_settingsPath);
                 
-                while (lines.size() > 2) {
-                    String sourceLine = lines.get(0);
-                    String filterLine = lines.get(1);
-                    String destLine = lines.get(2);
+                while (lines.size() > 3) {
+                    String name = lines.get(0);
+                    String sourceLine = lines.get(1);
+                    String filterLine = lines.get(2);
+                    String destLine = lines.get(3);
                     SourceRule source = SourceFactory.createSourceRule(sourceLine);
+                    source.toString();
                     FilterRule filt = FilterRuleFactory.createFilterRule(filterLine);
                     DestinationRule dest = DestinationFactory.createDestinationRule(destLine);
-                    Filter f = new Filter(source, filt, dest);
+                    Filter f = new Filter(source, filt, dest, name);
                     filtersFromFile.add(f);
+                    lines.remove(3);
                     lines.remove(2);
                     lines.remove(1);
                     lines.remove(0);

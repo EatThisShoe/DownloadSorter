@@ -16,7 +16,7 @@ public class FilterRuleFactory {
     public static FilterRule createFilterRule(String fileInput) {
         String[] args = fileInput.split(",");
         if (args.length > 0) {
-            if (args[0] == "FansubFilter")
+            if (args[0].equals("FansubFilter"))
                 return new FansubFilter();
         }
         return null;

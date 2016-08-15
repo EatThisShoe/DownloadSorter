@@ -5,6 +5,7 @@
  */
 package downloadsorter;
 
+import downloadsorter.GUI.MainGUI;
 import downloadsorter.Filters.Filter;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -23,9 +24,10 @@ public class SettingsManager {
     private Settings settings;
     
     public SettingsManager() {
-        GUI = new MainGUI(this);
         SettingsReader reader = new SettingsReader(_settingsPath);
         settings = reader.readSettingsFile();
+        
+        GUI = new MainGUI(this);
     }
     
     public void writeSettingsFile() {
@@ -37,7 +39,7 @@ public class SettingsManager {
     }
     
     void writeFilter(Filter f, BufferedWriter writer) {
-        try { writer.write(f.toString() + "\n");}
+        try { writer.write(f.stringForFile() + "\n");}
         catch(Exception e) {System.err.format("IOException (writing line): %s%n", e);}
     }
     
@@ -47,8 +49,7 @@ public class SettingsManager {
     }
     
     public Settings getSettings() {
-        Settings init = new Settings(this);
-        return init;
+        return settings;
     }
 
     /**

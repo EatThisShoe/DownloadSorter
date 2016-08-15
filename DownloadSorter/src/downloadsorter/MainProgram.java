@@ -5,6 +5,8 @@
  */
 package downloadsorter;
 
+import downloadsorter.GUI.MainGUI;
+
 /**
  *
  * @author Eric

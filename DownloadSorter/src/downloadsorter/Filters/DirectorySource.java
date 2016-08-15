@@ -21,9 +21,10 @@ import java.util.List;
  * @author Eric
  */
 public class DirectorySource implements SourceRule {
-    List<Path> sourceFolders = new ArrayList<>();
+    List<Path> sourceFolders;
     
     public DirectorySource(String[] fromFile) {
+        sourceFolders = new ArrayList<>();
         for ( int i = 1; i < fromFile.length; i++) {
             Path p = Paths.get(fromFile[i]);
             if (Files.exists(p))
@@ -32,15 +33,18 @@ public class DirectorySource implements SourceRule {
     }
     
     public DirectorySource(Path p) {
+        sourceFolders = new ArrayList<>();
         sourceFolders.add(p);
     }
     
     public DirectorySource(Path p, Path p2) {
+        sourceFolders = new ArrayList<>();
         sourceFolders.add(p);
         sourceFolders.add(p2);
     }
     
     public DirectorySource(List<Path> l) {
+        sourceFolders = new ArrayList<>();
         sourceFolders = l;
     }
 

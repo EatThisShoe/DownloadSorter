@@ -1,1 +1,4 @@
-D:\\torrents
+name
+DirectorySource,abaddir
+FansubFilter,
+DestinationNamedDirectories,morebaddir

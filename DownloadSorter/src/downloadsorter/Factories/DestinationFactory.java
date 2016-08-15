@@ -16,7 +16,7 @@ public class DestinationFactory {
     public static DestinationRule createDestinationRule(String fileInput) {
         String[] args = fileInput.split(",");
         if (args.length > 0) {
-            if (args[0] == "DestinationNamedDirectories")
+            if (args[0].equals("DestinationNamedDirectories"))
                 return new DestinationNamedDirectories(args);
         }
         return null;

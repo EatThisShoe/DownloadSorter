@@ -15,11 +15,13 @@ public class Filter {
     SourceRule source;
     FilterRule filter;
     DestinationRule destination;
+    String name;
     
-    public Filter(SourceRule s, FilterRule f, DestinationRule d) {
+    public Filter(SourceRule s, FilterRule f, DestinationRule d, String name) {
         source = s;
         filter = f;
         destination = d;
+        this.name = name;
     }
     
     public void FilterFiles() {
@@ -28,9 +30,14 @@ public class Filter {
         destination.moveFiles(relevant);
     }
     
-    public String toString() {
-        return (source.toString() + "\n"
+    public String stringForFile() {
+        return (name + "\n"
+                + source.toString() + "\n"
                 + filter.toString() + "\n"
                 + destination.toString() + "\n");
+    }
+    
+    public String toString() {
+        return name;
     }
 }
