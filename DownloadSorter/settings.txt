@@ -1,4 +1,4 @@
 name
-DirectorySource,abaddir
+DirectorySource,D:\Torrents
 FansubFilter,
 DestinationNamedDirectories,morebaddir

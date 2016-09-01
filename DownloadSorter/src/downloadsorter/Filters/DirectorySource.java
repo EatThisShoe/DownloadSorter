@@ -67,7 +67,7 @@ public class DirectorySource implements SourceRule {
     public String toString() {
         String s = "DirectorySource,";
         for(Path p: sourceFolders) {
-            s.concat(p.toString() + ",");
+            s += p.toString() + ",";
         }
         return s;
     }

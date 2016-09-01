@@ -14,10 +14,10 @@ import downloadsorter.Filters.SourceRule;
  */
 public class SourceFactory {
     public static SourceRule createSourceRule(String fileInput) {
-        String[] args = fileInput.split(",");
-        if (args.length > 0) {
-            if (args[0].equals("DirectorySource"))
-                return new DirectorySource(args);
+        String[] parameters = fileInput.split(",");
+        if (parameters.length > 0) {
+            if (parameters[0].equals("DirectorySource"))
+                return new DirectorySource(parameters);
         }
         return null;
     }

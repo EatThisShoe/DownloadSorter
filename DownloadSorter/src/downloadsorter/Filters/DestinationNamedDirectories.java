@@ -42,7 +42,7 @@ public class DestinationNamedDirectories implements DestinationRule {
     @Override
     public String toString() {
         String s = "DestinationNamedDirectories,";
-        s.concat(baseDirectory.toString());
+        s = s.concat(baseDirectory.toString());
         return s;
     }
 }

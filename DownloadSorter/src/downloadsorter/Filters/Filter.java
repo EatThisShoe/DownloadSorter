@@ -37,6 +37,18 @@ public class Filter {
                 + destination.toString() + "\n");
     }
     
+    public String[] getSourceParamaters() {
+        return source.toString().split(",");
+    }
+    
+    public String[] getFilterParameters() {
+        return filter.toString().split(",");
+    }
+    
+    public String[] getDestinationParameters() {
+        return destination.toString().split(",");
+    }
+    
     public String toString() {
         return name;
     }

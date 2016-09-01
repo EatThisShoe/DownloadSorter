@@ -9,9 +9,11 @@ import downloadsorter.FileSorter;
 import downloadsorter.Filters.Filter;
 import downloadsorter.Settings;
 import downloadsorter.SettingsManager;
+import java.awt.GridBagConstraints;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 
 /**
  *
@@ -28,6 +30,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         initComponents();
+        
+        JLabel extraFilterLabel = new JLabel("Second Filter Rule:");
+        GridBagConstraints gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 4;
+        selectedFilterPanel.add(extraFilterLabel, gridBagConstraints);
     }
 
     /**
@@ -38,6 +45,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         startButton = new javax.swing.JButton();
         btnSaveAndExit = new javax.swing.JButton();
@@ -73,15 +81,38 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        selectedFilterPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        selectedFilterPanel.setLayout(new java.awt.GridBagLayout());
+
         nameLabel.setText("Filter Name:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        selectedFilterPanel.add(nameLabel, gridBagConstraints);
 
         nameTextField.setText("New filter");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        selectedFilterPanel.add(nameTextField, gridBagConstraints);
 
         sourceLabel.setText("Select Source Rule:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        selectedFilterPanel.add(sourceLabel, gridBagConstraints);
 
         sourceSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select source", "Directory" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        selectedFilterPanel.add(sourceSelector, gridBagConstraints);
 
         sourceTextField.setText("select source directory");
+        sourceTextField.setMinimumSize(new java.awt.Dimension(300, 20));
+        sourceTextField.setName(""); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        selectedFilterPanel.add(sourceTextField, gridBagConstraints);
 
         browseSourceButton.setText("Browse");
         browseSourceButton.addActionListener(new java.awt.event.ActionListener() {
@@ -89,78 +120,42 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
                 browseSourceButtonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        selectedFilterPanel.add(browseSourceButton, gridBagConstraints);
 
         filterLabel.setText("Select Filter Rule:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        selectedFilterPanel.add(filterLabel, gridBagConstraints);
 
         filterSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select filter rule", "Anime Fansub" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        selectedFilterPanel.add(filterSelector, gridBagConstraints);
 
         destinationLabel.setText("Select Destination Rule:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        selectedFilterPanel.add(destinationLabel, gridBagConstraints);
 
         destinationSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "select destination", "Named Directories" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        selectedFilterPanel.add(destinationSelector, gridBagConstraints);
 
         destinationTextField.setText("select destination directory");
+        destinationTextField.setMinimumSize(new java.awt.Dimension(300, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        selectedFilterPanel.add(destinationTextField, gridBagConstraints);
 
         browseDestinationButton.setText("Browse");
-
-        javax.swing.GroupLayout selectedFilterPanelLayout = new javax.swing.GroupLayout(selectedFilterPanel);
-        selectedFilterPanel.setLayout(selectedFilterPanelLayout);
-        selectedFilterPanelLayout.setHorizontalGroup(
-            selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(selectedFilterPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(selectedFilterPanelLayout.createSequentialGroup()
-                        .addComponent(nameLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(selectedFilterPanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sourceLabel)
-                            .addComponent(filterLabel)
-                            .addComponent(destinationLabel)
-                            .addGroup(selectedFilterPanelLayout.createSequentialGroup()
-                                .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(destinationSelector, javax.swing.GroupLayout.Alignment.LEADING, 0, 172, Short.MAX_VALUE)
-                                    .addComponent(filterSelector, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(sourceSelector, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(sourceTextField)
-                                    .addComponent(destinationTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(browseSourceButton)
-                                    .addComponent(browseDestinationButton))))))
-                .addContainerGap(41, Short.MAX_VALUE))
-        );
-        selectedFilterPanelLayout.setVerticalGroup(
-            selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(selectedFilterPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameLabel)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sourceLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sourceSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sourceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(browseSourceButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filterLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filterSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(destinationLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(selectedFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(destinationSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(destinationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(browseDestinationButton))
-                .addContainerGap(40, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        selectedFilterPanel.add(browseDestinationButton, gridBagConstraints);
 
         filterList.setModel(getFilterModel());
         filterList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -187,9 +182,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectedFilterPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(selectedFilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -198,8 +193,8 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(selectedFilterPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 20, Short.MAX_VALUE))
+                        .addComponent(selectedFilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(40, 40, 40))
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -240,19 +235,16 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_filterListMouseClicked
 
     private void displayFilterInFields(Filter filter) {
-        String filterString = filter.stringForFile();
-        String lines[] = filterString.split("\n");
-        nameTextField.setText(lines[0]);
+        nameTextField.setText(filter.toString());
         
-        String source[] = lines[1].split(",");
+        String source[] = filter.getSourceParamaters();
         displaySourceRule(source);
         
-        String filterRule[] = lines[2].split(",");
+        String filterRule[] = filter.getFilterParameters();
         displayFilterRule(filterRule);
         
-        String dest[] = lines[3].split(",");
+        String dest[] = filter.getDestinationParameters();
         displayDestinationRule(dest);
-        
     }
     
     private void displaySourceRule(String source[]) {
@@ -262,7 +254,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         if(source.length > 1) {
             String dirs ="";
             for(int i = 1; i < source.length; i++) {
-                dirs.concat(source[i] + ",");
+                dirs += source[i] + ",";
             }
             sourceTextField.setText(dirs);
         }
@@ -274,7 +266,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         if(filter.length > 1) {
             String params = "";
             for (int i= 1; i > filter.length; i++) {
-                params.concat(filter[i] + ",");
+                params += filter[i] + ",";
             }
             //filterTextField.setText(params);
         }
@@ -287,19 +279,19 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         if(dest.length > 1) {
             String dirs ="";
             for(int i = 1; i < dest.length; i++) {
-                dirs.concat(dest[i] + ",");
+                dirs += dest[i] + ",";
             }
             destinationTextField.setText(dirs);
         }
     }
     
-    public Filter[] getFilterArray() {
-        List<Filter> lf = settings.getSettings().getFilters();
-        Filter[] af = new Filter[lf.size()];
-        for (int i = 0; i < lf.size(); i++)
-            af[i] = lf.get(i);
-        return af;
-    }
+//    public Filter[] getFilterArray() {
+//        List<Filter> lf = settings.getSettings().getFilters();
+//        Filter[] af = new Filter[lf.size()];
+//        for (int i = 0; i < lf.size(); i++)
+//            af[i] = lf.get(i);
+//        return af;
+//    }
     
     public DefaultListModel getFilterModel() {
         DefaultListModel dlm = new DefaultListModel();
