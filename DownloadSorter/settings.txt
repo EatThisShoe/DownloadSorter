@@ -1,4 +1,5 @@
 name
-DirectorySource,D:\Torrents
+DirectorySource,D:\Torrents,
 FansubFilter,
-DestinationNamedDirectories,morebaddir
+DestinationNamedDirectories,D:\Torrents
+

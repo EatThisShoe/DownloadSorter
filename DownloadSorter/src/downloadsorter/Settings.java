@@ -14,7 +14,7 @@ import java.util.List;
  * @author Eric
  */
 public class Settings {
-    public List<Filter> filters;
+    private List<Filter> filters;
     
     public Settings(SettingsManager s) {
         filters = s.getSettings().getFilters();
@@ -30,5 +30,12 @@ public class Settings {
     
     public List<Filter> getFilters() {
         return filters;
+    }
+    
+    public void replaceFilter(int index, Filter filt) {
+        if (index < filters.size() && index >= 0)
+            filters.set(index, filt);
+        else
+            filters.add(filt);
     }
 }

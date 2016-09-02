@@ -16,7 +16,7 @@ public class SourceFactory {
     public static SourceRule createSourceRule(String fileInput) {
         String[] parameters = fileInput.split(",");
         if (parameters.length > 0) {
-            if (parameters[0].equals("DirectorySource"))
+            if (parameters[0].equals("DirectorySource") || parameters[0].equals("Directory"))
                 return new DirectorySource(parameters);
         }
         return null;

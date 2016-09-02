@@ -5,8 +5,14 @@
  */
 package downloadsorter.GUI;
 
+import downloadsorter.Factories.DestinationFactory;
+import downloadsorter.Factories.FilterRuleFactory;
+import downloadsorter.Factories.SourceFactory;
 import downloadsorter.FileSorter;
+import downloadsorter.Filters.DestinationRule;
 import downloadsorter.Filters.Filter;
+import downloadsorter.Filters.FilterRule;
+import downloadsorter.Filters.SourceRule;
 import downloadsorter.Settings;
 import downloadsorter.SettingsManager;
 import java.awt.GridBagConstraints;
@@ -64,6 +70,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         browseDestinationButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         filterList = new javax.swing.JList<>();
+        jPanel1 = new javax.swing.JPanel();
+        saveFilterButton = new javax.swing.JButton();
+        resetFilterButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,6 +162,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         selectedFilterPanel.add(destinationTextField, gridBagConstraints);
 
         browseDestinationButton.setText("Browse");
+        browseDestinationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseDestinationButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
         selectedFilterPanel.add(browseDestinationButton, gridBagConstraints);
@@ -170,6 +184,36 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         });
         jScrollPane1.setViewportView(filterList);
 
+        saveFilterButton.setText("Save Filter");
+        saveFilterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveFilterButtonActionPerformed(evt);
+            }
+        });
+
+        resetFilterButton.setText("Reset");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(saveFilterButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resetFilterButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveFilterButton)
+                    .addComponent(resetFilterButton))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -177,9 +221,15 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
             .addGroup(layout.createSequentialGroup()
                 .addGap(99, 99, 99)
                 .addComponent(startButton)
-                .addGap(71, 71, 71)
-                .addComponent(btnSaveAndExit)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(btnSaveAndExit)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,7 +244,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(selectedFilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(40, 40, 40))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54))
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -234,6 +286,33 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         
     }//GEN-LAST:event_filterListMouseClicked
 
+    private void browseDestinationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseDestinationButtonActionPerformed
+        int returnVal = fileChooser.showOpenDialog(this);
+        String destPath = fileChooser.getSelectedFile().toString();
+        destinationTextField.setText(destPath);
+    }//GEN-LAST:event_browseDestinationButtonActionPerformed
+
+    private void saveFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFilterButtonActionPerformed
+        Filter filter = readFilterFromFields();
+        settings.getSettings().replaceFilter(filterList.getSelectedIndex(), filter);
+    }//GEN-LAST:event_saveFilterButtonActionPerformed
+
+    private Filter readFilterFromFields() {
+        String srcString = ""; 
+        String filtString = ""; 
+        String destString = "";
+        
+        srcString += sourceSelector.getSelectedItem() + "," + sourceTextField.getText();
+        filtString += filterSelector.getSelectedItem();
+        destString += destinationSelector.getSelectedItem() + "," + destinationTextField.getText();
+        
+        SourceRule source = SourceFactory.createSourceRule(srcString);
+        FilterRule filter = FilterRuleFactory.createFilterRule(filtString);
+        DestinationRule destination = DestinationFactory.createDestinationRule(destString);
+        
+        return new Filter(source, filter, destination, nameTextField.getText());
+    }
+    
     private void displayFilterInFields(Filter filter) {
         nameTextField.setText(filter.toString());
         
@@ -254,7 +333,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         if(source.length > 1) {
             String dirs ="";
             for(int i = 1; i < source.length; i++) {
-                dirs += source[i] + ",";
+                dirs += source[i];
+                if (i < source.length-1)
+                    dirs += ",";
             }
             sourceTextField.setText(dirs);
         }
@@ -266,7 +347,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         if(filter.length > 1) {
             String params = "";
             for (int i= 1; i > filter.length; i++) {
-                params += filter[i] + ",";
+                params += filter[i];
+                if (i < filter.length-1)
+                    params += ",";
             }
             //filterTextField.setText(params);
         }
@@ -279,19 +362,13 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         if(dest.length > 1) {
             String dirs ="";
             for(int i = 1; i < dest.length; i++) {
-                dirs += dest[i] + ",";
+                dirs += dest[i];
+                if (i < dest.length-1)
+                    dirs += ",";
             }
             destinationTextField.setText(dirs);
         }
     }
-    
-//    public Filter[] getFilterArray() {
-//        List<Filter> lf = settings.getSettings().getFilters();
-//        Filter[] af = new Filter[lf.size()];
-//        for (int i = 0; i < lf.size(); i++)
-//            af[i] = lf.get(i);
-//        return af;
-//    }
     
     public DefaultListModel getFilterModel() {
         DefaultListModel dlm = new DefaultListModel();
@@ -338,9 +415,12 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel filterLabel;
     private javax.swing.JList<Filter> filterList;
     private javax.swing.JComboBox<String> filterSelector;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
+    private javax.swing.JButton resetFilterButton;
+    private javax.swing.JButton saveFilterButton;
     private javax.swing.JPanel selectedFilterPanel;
     private javax.swing.JLabel sourceLabel;
     private javax.swing.JComboBox<String> sourceSelector;

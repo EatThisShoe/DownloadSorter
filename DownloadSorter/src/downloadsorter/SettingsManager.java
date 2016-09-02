@@ -32,9 +32,10 @@ public class SettingsManager {
     
     public void writeSettingsFile() {
         try {
-            BufferedWriter writer = Files.newBufferedWriter(_settingsPath, CREATE);
+            BufferedWriter writer = Files.newBufferedWriter(_settingsPath);
             settings.getFilters().stream()
                     .forEach(filter ->  {writeFilter(filter, writer);});
+            writer.close();
         } catch(Exception e) {System.err.format("IOException (creating settings writer): %s%n", e);}
     }
     
