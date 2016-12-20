@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 public class FansubFilterTest {
     Path sampleDir;
     Path testDir;
-    List<Path> input;
+    List<FileMetaData> input;
     
     public FansubFilterTest() {
         sampleDir = Paths.get("Filter test sample data", "sample source");

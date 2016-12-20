@@ -13,6 +13,6 @@ import java.util.List;
  * @author Eric
  */
 public interface SourceRule {
-    public List<Path> getFiles();
+    public List<FileMetaData> getFiles();
     public String toString();
 }

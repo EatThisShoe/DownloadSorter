@@ -5,6 +5,7 @@
  */
 package downloadsorter.Filters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,44 +13,107 @@ import java.util.List;
  * @author Eric
  */
 public class Filter {
-    SourceRule source;
-    FilterRule filter;
-    DestinationRule destination;
+    private List<SourceRule> sources;
+    private List<FilterRule> filters;
+    private List<DestinationRule> destinations;
     String name;
     
-    public Filter(SourceRule s, FilterRule f, DestinationRule d, String name) {
-        source = s;
-        filter = f;
-        destination = d;
+    public Filter(List<SourceRule> s, List<FilterRule> f, List<DestinationRule> d, String name) {
+        sources = s;
+        filters = f;
+        destinations = d;
         this.name = name;
     }
     
     public void FilterFiles() {
-        List files = source.getFiles();
-        List relevant = filter.filterFiles(files);
-        destination.moveFiles(relevant);
+        List files = new ArrayList();
+        for(SourceRule s : getSources()){
+            files.addAll(s.getFiles());
+        }
+        for(FilterRule f : getFilters()) {
+            files = f.filterFiles(files);
+        }
+        for(DestinationRule d : getDestinations()) {
+            d.moveFiles(files);
+        }
     }
     
     public String stringForFile() {
-        return (name + "\n"
-                + source.toString() + "\n"
-                + filter.toString() + "\n"
-                + destination.toString() + "\n");
+        String srcStr = "";
+        for(SourceRule src: getSources())
+            srcStr += src.toString();
+        String filtStr = "";
+        for(FilterRule filt : getFilters())
+            filtStr += filt.toString();
+        String destStr = "";
+        for(DestinationRule dest : getDestinations())
+            destStr += dest.toString();
+        return ("FILTER\n"
+                + name + "\n"
+                + "SOURCERULES\n"
+                + srcStr + "\n"
+                + "FILTERRULES\n"
+                + filtStr + "\n"
+                + "DESTINATIONRULES\n"
+                + destStr + "\n"
+                + "ENDFILTER\n");
     }
     
     public String[] getSourceParamaters() {
-        return source.toString().split(",");
+        return getSources().toString().split(",");
     }
     
     public String[] getFilterParameters() {
-        return filter.toString().split(",");
+        return getFilters().toString().split(",");
     }
     
     public String[] getDestinationParameters() {
-        return destination.toString().split(",");
+        return getDestinations().toString().split(",");
     }
     
     public String toString() {
         return name;
+    }
+
+    /**
+     * @return the sources
+     */
+    public List<SourceRule> getSources() {
+        return sources;
+    }
+
+    /**
+     * @param sources the sources to set
+     */
+    public void setSources(List<SourceRule> sources) {
+        this.sources = sources;
+    }
+
+    /**
+     * @return the filters
+     */
+    public List<FilterRule> getFilters() {
+        return filters;
+    }
+
+    /**
+     * @param filters the filters to set
+     */
+    public void setFilters(List<FilterRule> filters) {
+        this.filters = filters;
+    }
+
+    /**
+     * @return the destinations
+     */
+    public List<DestinationRule> getDestinations() {
+        return destinations;
+    }
+
+    /**
+     * @param destinations the destinations to set
+     */
+    public void setDestinations(List<DestinationRule> destinations) {
+        this.destinations = destinations;
     }
 }

@@ -16,6 +16,7 @@ import downloadsorter.Filters.SourceRule;
 import downloadsorter.Settings;
 import downloadsorter.SettingsManager;
 import java.awt.GridBagConstraints;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -310,19 +311,29 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         FilterRule filter = FilterRuleFactory.createFilterRule(filtString);
         DestinationRule destination = DestinationFactory.createDestinationRule(destString);
         
-        return new Filter(source, filter, destination, nameTextField.getText());
+        List<SourceRule> sources = new ArrayList();
+        sources.add(source);
+        List<FilterRule> filters = new ArrayList();
+        filters.add(filter);
+        List<DestinationRule> destinations = new ArrayList();
+        destinations.add(destination);
+        
+        return new Filter(sources, filters, destinations, nameTextField.getText());
     }
     
     private void displayFilterInFields(Filter filter) {
         nameTextField.setText(filter.toString());
         
-        String source[] = filter.getSourceParamaters();
+        List sources = filter.getSources();
+        String source[] = sources.get(0).toString().split(",");
         displaySourceRule(source);
         
-        String filterRule[] = filter.getFilterParameters();
+        List filters = filter.getFilters();
+        String filterRule[] = filters.get(0).toString().split(",");
         displayFilterRule(filterRule);
         
-        String dest[] = filter.getDestinationParameters();
+        List dests = filter.getDestinations();
+        String dest[] = dests.get(0).toString().split(",");
         displayDestinationRule(dest);
     }
     

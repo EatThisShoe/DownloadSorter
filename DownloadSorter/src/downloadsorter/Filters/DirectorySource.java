@@ -49,15 +49,15 @@ public class DirectorySource implements SourceRule {
     }
 
     @Override
-    public List<Path> getFiles() {
-        List<Path> filesFound = new ArrayList<>();
+    public List<FileMetaData> getFiles() {
+        List<FileMetaData> filesFound = new ArrayList<>();
         PathGatherer walker = new PathGatherer();
         
         sourceFolders.stream().forEach(dir -> {
             try {
                 Files.walkFileTree(dir, walker);
                 walker.getList().stream()
-                        .forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(sourceFile);});
+                        .forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(new SourceFile(sourceFile));});
             } catch(Exception e) {System.out.println(e.getMessage());}
         });
         return filesFound;

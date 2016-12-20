@@ -58,7 +58,7 @@ public class DirectorySourceTest {
     public void testGetFiles() {
         System.out.println("getFiles: List not empty when directory is not empty.");
         DirectorySource instance = new DirectorySource(testDir);
-        List<Path> result = instance.getFiles();
+        List<FileMetaData> result = instance.getFiles();
         assertTrue(result.size() > 0);
     }
         
@@ -66,9 +66,9 @@ public class DirectorySourceTest {
     public void testGetFilesMore() {
         System.out.println("getFiles: List files exist");
         DirectorySource instance2 = new DirectorySource(testDir);
-        List<Path> result2 = instance2.getFiles();
+        List<FileMetaData> result2 = instance2.getFiles();
         boolean filesExist = result2.stream()
-                            .allMatch(p -> Files.exists(p));
+                            .allMatch(p -> Files.exists(p.getPath()));
         assertTrue(filesExist);
         
         result2.stream().forEach(p -> System.out.println(p));

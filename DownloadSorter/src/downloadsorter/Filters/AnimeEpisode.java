@@ -14,8 +14,8 @@ public class AnimeEpisode implements FileMetaData {
     private final String name;
     private Boolean hasFansubFormat;
     
-    public AnimeEpisode(Path p) {
-        path = p;
+    public AnimeEpisode(FileMetaData f) {
+        path = f.getPath();
         hasFansubFormat = false;
         name = extractSeriesName();
     }

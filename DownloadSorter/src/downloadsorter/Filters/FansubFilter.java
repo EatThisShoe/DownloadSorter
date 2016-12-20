@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class FansubFilter implements FilterRule {
 
     @Override
-    public List<FileMetaData> filterFiles(List<Path> l) {
+    public List<FileMetaData> filterFiles(List<FileMetaData> l) {
         List<FileMetaData> fansubs = l.stream()
                     .map(AnimeEpisode::new)
                     .collect(Collectors.toList());
@@ -26,6 +26,8 @@ public class FansubFilter implements FilterRule {
                     .filter(f -> f.isMatch()) //should remove directories after counting them for duplicates
                     .collect(Collectors.toList());
     }
+    
+    
     
     @Override
     public String toString() {

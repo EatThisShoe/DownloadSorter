@@ -12,11 +12,12 @@ import downloadsorter.Filters.DestinationRule;
 import downloadsorter.Filters.Filter;
 import downloadsorter.Filters.FilterRule;
 import downloadsorter.Filters.SourceRule;
-import static downloadsorter.SettingsManager._settingsPath;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -34,27 +35,42 @@ public class SettingsReader {
     public final Settings readSettingsFile() {
         List<Filter> filtersFromFile = new ArrayList<>();
         
-        if (Files.exists(_settingsPath)) {
+        if (Files.exists(settingsPath)) {
             try {
-                lines = Files.readAllLines(_settingsPath);
+                lines = Files.readAllLines(settingsPath);
                 
-                while (lines.size() > 3) {
-                    String name = lines.get(0);
-                    String sourceLine = lines.get(1);
-                    String filterLine = lines.get(2);
-                    String destLine = lines.get(3);
-                    SourceRule source = SourceFactory.createSourceRule(sourceLine);
-                    source.toString();
-                    FilterRule filt = FilterRuleFactory.createFilterRule(filterLine);
-                    DestinationRule dest = DestinationFactory.createDestinationRule(destLine);
-                    Filter f = new Filter(source, filt, dest, name);
-                    filtersFromFile.add(f);
-                    lines.remove(3);
-                    lines.remove(2);
-                    lines.remove(1);
-                    lines.remove(0);
+                Iterator<String> itr = lines.iterator();
+                while (itr.hasNext()) {
+                    String line = itr.next();
+                    if(line.equals("FILTER")) {
+                        List<SourceRule> sources = new ArrayList();
+                        List<FilterRule> filters = new ArrayList();
+                        List<DestinationRule> destinations = new ArrayList();
+                        
+                        String name = itr.next();
+                        while (itr.hasNext() && !line.equals("ENDFILTER")) {
+                            line = itr.next();
+                            
+                            SourceRule source = SourceFactory.createSourceRule(line);
+                            if (source != null)
+                                sources.add(source);
+                            else {
+                                FilterRule filter = FilterRuleFactory.createFilterRule(line);
+                                if (filter != null) {
+                                    filters.add(filter);
+                                } else {
+                                    DestinationRule dest = DestinationFactory.createDestinationRule(line);
+                                    if (dest != null)
+                                        destinations.add(dest);
+                                }
+                            }
+                        }
+                        if (!(sources.isEmpty() || filters.isEmpty() || destinations.isEmpty())) {
+                            Filter f = new Filter(sources, filters, destinations, name);
+                            filtersFromFile.add(f);
+                        }
+                    }
                 }
-
             } catch(Exception e) {System.err.format("IOException: %s%n", e);}
         } else { //defaults
             System.out.println("settings file not found");

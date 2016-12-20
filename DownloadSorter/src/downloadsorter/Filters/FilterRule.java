@@ -13,5 +13,5 @@ import java.util.List;
  * @author Eric
  */
 public interface FilterRule {
-    public List<FileMetaData> filterFiles(List<Path> l);
+    public List<FileMetaData> filterFiles(List<FileMetaData> l);
 }

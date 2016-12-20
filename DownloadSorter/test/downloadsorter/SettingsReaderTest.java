@@ -45,8 +45,10 @@ public class SettingsReaderTest {
     public void testReadSettingsFile() {
         System.out.println("readSettingsFile: Bad path returns empty list");
         SettingsReader instance = new SettingsReader(Paths.get("notarealpath"));
-        Settings result = instance.readSettingsFile();
-        assertEquals(result.getFilters().size(), 0);
+        Settings set = instance.readSettingsFile();
+        int result = set.getFilters().size();
+        System.out.println(result);
+        assertEquals(result, 0);
     }
     
 }

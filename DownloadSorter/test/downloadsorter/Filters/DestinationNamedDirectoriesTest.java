@@ -72,7 +72,7 @@ public class DestinationNamedDirectoriesTest {
         System.out.println("moveFiles");
         DestinationNamedDirectories instance = new DestinationNamedDirectories(destDir);
         instance.moveFiles(input);
-        List<Path> outputFiles = new DirectorySource(destDir).getFiles();
+        List<FileMetaData> outputFiles = new DirectorySource(destDir).getFiles();
         
         //input.stream().forEach(x -> System.out.println("in: " + x.getPath().toString()));
         //outputFiles.stream().forEach(x -> System.out.println(x.toString()));
@@ -80,8 +80,8 @@ public class DestinationNamedDirectoriesTest {
         boolean allFilesMoved = true;
         for(FileMetaData inputFile : input) {
             boolean match = false;
-            for(Path movedFile : outputFiles) {
-                if (inputFile.getPath().getFileName().equals(movedFile.getFileName()))
+            for(FileMetaData movedFile : outputFiles) {
+                if (inputFile.getPath().getFileName().equals(movedFile.getPath().getFileName()))
                     match = true;
             }
             if (match == false)
