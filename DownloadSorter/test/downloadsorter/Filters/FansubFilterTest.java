@@ -64,7 +64,7 @@ public class FansubFilterTest {
         System.out.println("filterFiles: all files have match flag set.");
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
-        boolean fansubFormat = result.stream().allMatch(file -> file.isMatch());
+        boolean fansubFormat = result.stream().allMatch(file -> file.getAttribute("series name") != null);
         assertTrue(fansubFormat);
     }
     
@@ -83,7 +83,7 @@ public class FansubFilterTest {
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
         List<FileMetaData> matchingPair = result.stream()
-                .filter(file -> file.getName().equals("Has Match"))
+                .filter(file -> file.getAttribute("series name").equals("Has Match"))
                 .collect(Collectors.toList());
         assertEquals(2, matchingPair.size());
     }
@@ -94,7 +94,7 @@ public class FansubFilterTest {
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
         List<FileMetaData> matchingPair = result.stream()
-                .filter(file -> file.getName().equals("Nested Match"))
+                .filter(file -> file.getAttribute("series name").equals("Nested Match"))
                 .collect(Collectors.toList());
         assertEquals(2, matchingPair.size());
     }
@@ -105,7 +105,7 @@ public class FansubFilterTest {
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
         List<FileMetaData> matchingPair = result.stream()
-                .filter(file -> file.getName().equals("Match in Other Dir"))
+                .filter(file -> file.getAttribute("series name").equals("Match in Other Dir"))
                 .collect(Collectors.toList());
         assertEquals(2, matchingPair.size());
     }

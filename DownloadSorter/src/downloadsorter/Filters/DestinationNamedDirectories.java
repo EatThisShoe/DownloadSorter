@@ -28,7 +28,7 @@ public class DestinationNamedDirectories implements DestinationRule {
     @Override
     public void moveFiles(List<FileMetaData> l) {
         for (FileMetaData file: l){
-            Path seriesFolder = baseDirectory.resolve(file.getName());
+            Path seriesFolder = baseDirectory.resolve(file.getAttribute("series name"));
             if(!Files.exists(seriesFolder)) {
                 try {Files.createDirectory(seriesFolder);}
                 catch(Exception e) {System.out.println(e.getMessage());}

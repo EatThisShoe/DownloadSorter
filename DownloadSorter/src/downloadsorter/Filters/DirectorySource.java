@@ -45,7 +45,7 @@ public class DirectorySource implements SourceRule {
     
     public DirectorySource(List<Path> l) {
         sourceFolders = new ArrayList<>();
-        sourceFolders = l;
+        sourceFolders.addAll(l);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class DirectorySource implements SourceRule {
             try {
                 Files.walkFileTree(dir, walker);
                 walker.getList().stream()
-                        .forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(new SourceFile(sourceFile));});
+                        .forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(new FileMetaData(sourceFile));});
             } catch(Exception e) {System.out.println(e.getMessage());}
         });
         return filesFound;
