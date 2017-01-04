@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter.Filters;
+package downloadsorter.model;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -20,8 +20,17 @@ import java.util.List;
  *
  * @author Eric
  */
-public class DirectorySource implements SourceRule {
+public class DirectorySource implements SourceRule, Rule {
+    final static String fxmlPath = "view/rulepanes/DirectorySource.fxml";
     List<Path> sourceFolders;
+
+    public List<Path> getSourceFolders() {
+        return sourceFolders;
+    }
+
+    public void setSourceFolders(List<Path> sourceFolders) {
+        this.sourceFolders = sourceFolders;
+    }
     
     public DirectorySource(String[] fromFile) {
         sourceFolders = new ArrayList<>();
@@ -37,16 +46,15 @@ public class DirectorySource implements SourceRule {
         sourceFolders.add(p);
     }
     
-    public DirectorySource(Path p, Path p2) {
-        sourceFolders = new ArrayList<>();
-        sourceFolders.add(p);
-        sourceFolders.add(p2);
-    }
-    
     public DirectorySource(List<Path> l) {
         sourceFolders = new ArrayList<>();
         sourceFolders.addAll(l);
     }
+    
+    public DirectorySource() {
+        sourceFolders = new ArrayList<>();
+    }
+  
 
     @Override
     public List<FileMetaData> getFiles() {
@@ -63,6 +71,11 @@ public class DirectorySource implements SourceRule {
         return filesFound;
     }
     
+    @Override 
+    public String getDescription() {
+        return "Get files from directory";
+    }
+    
     @Override
     public String toString() {
         String s = "DirectorySource,";
@@ -71,6 +84,13 @@ public class DirectorySource implements SourceRule {
         }
         return s;
     }
+    
+    @Override
+    public String getFXMLPath() {
+        return fxmlPath;
+    }
+    
+    
 }
 
 class PathGatherer extends SimpleFileVisitor<Path> {

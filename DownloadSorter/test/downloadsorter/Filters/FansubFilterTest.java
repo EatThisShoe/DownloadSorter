@@ -5,6 +5,10 @@
  */
 package downloadsorter.Filters;
 
+import downloadsorter.model.FileMetaData;
+import downloadsorter.model.FansubFilter;
+import downloadsorter.model.FileAttributes;
+import downloadsorter.model.DirectorySource;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,7 +68,7 @@ public class FansubFilterTest {
         System.out.println("filterFiles: all files have match flag set.");
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
-        boolean fansubFormat = result.stream().allMatch(file -> file.getAttribute("series name") != null);
+        boolean fansubFormat = result.stream().allMatch(file -> file.getAttribute(FileAttributes.seriesName) != null);
         assertTrue(fansubFormat);
     }
     
@@ -83,7 +87,7 @@ public class FansubFilterTest {
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
         List<FileMetaData> matchingPair = result.stream()
-                .filter(file -> file.getAttribute("series name").equals("Has Match"))
+                .filter(file -> file.getAttribute(FileAttributes.seriesName).equals("Has Match"))
                 .collect(Collectors.toList());
         assertEquals(2, matchingPair.size());
     }
@@ -94,7 +98,7 @@ public class FansubFilterTest {
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
         List<FileMetaData> matchingPair = result.stream()
-                .filter(file -> file.getAttribute("series name").equals("Nested Match"))
+                .filter(file -> file.getAttribute(FileAttributes.seriesName).equals("Nested Match"))
                 .collect(Collectors.toList());
         assertEquals(2, matchingPair.size());
     }
@@ -105,7 +109,7 @@ public class FansubFilterTest {
         FansubFilter instance = new FansubFilter();
         List<FileMetaData> result = instance.filterFiles(input);
         List<FileMetaData> matchingPair = result.stream()
-                .filter(file -> file.getAttribute("series name").equals("Match in Other Dir"))
+                .filter(file -> file.getAttribute(FileAttributes.seriesName).equals("Match in Other Dir"))
                 .collect(Collectors.toList());
         assertEquals(2, matchingPair.size());
     }

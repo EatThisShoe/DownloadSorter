@@ -5,34 +5,37 @@
  */
 package downloadsorter;
 
-import downloadsorter.Filters.Filter;
+import downloadsorter.model.FileOperation;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author Eric
  */
 public class Settings {
-    private List<Filter> filters;
+    private List<FileOperation> l;
+    private ObservableList<FileOperation> filters;
     
     public Settings(SettingsManager s) {
-        filters = s.getSettings().getFilters();
+        filters = FXCollections.observableArrayList(s.getSettings().getFilters());
     }
     
-    public Settings(List<Filter> ls) {
-        filters = ls;
+    public Settings(List<FileOperation> ls) {
+        filters = FXCollections.observableArrayList(ls);
     }
     
     public Settings() {
-        filters = new ArrayList<>();
+        filters = FXCollections.observableArrayList(new ArrayList<>());
     }
     
-    public List<Filter> getFilters() {
+    public ObservableList<FileOperation> getFilters() {
         return filters;
     }
     
-    public void replaceFilter(int index, Filter filt) {
+    public void replaceFilter(int index, FileOperation filt) {
         if (index < filters.size() && index >= 0)
             filters.set(index, filt);
         else

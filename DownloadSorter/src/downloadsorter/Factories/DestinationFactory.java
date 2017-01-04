@@ -5,8 +5,8 @@
  */
 package downloadsorter.Factories;
 
-import downloadsorter.Filters.DestinationNamedDirectories;
-import downloadsorter.Filters.DestinationRule;
+import downloadsorter.model.DestinationNamedDirectories;
+import downloadsorter.model.DestinationRule;
 
 /**
  *

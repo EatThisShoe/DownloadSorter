@@ -5,8 +5,8 @@
  */
 package downloadsorter;
 
-import downloadsorter.GUI.MainGUI;
-import downloadsorter.Filters.Filter;
+import downloadsorter.view.MainGUI;
+import downloadsorter.model.FileOperation;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,14 +20,11 @@ import static java.nio.file.StandardOpenOption.CREATE;
  */
 public class SettingsManager {
     private static final Path _settingsPath = Paths.get("settings.txt");
-    private MainGUI GUI;
     private Settings settings;
     
     public SettingsManager() {
         SettingsReader reader = new SettingsReader(_settingsPath);
         settings = reader.readSettingsFile();
-        
-        GUI = new MainGUI(this);
     }
     
     public void writeSettingsFile() {
@@ -39,7 +36,7 @@ public class SettingsManager {
         } catch(Exception e) {System.err.format("IOException (creating settings writer): %s%n", e);}
     }
     
-    void writeFilter(Filter f, BufferedWriter writer) {
+    void writeFilter(FileOperation f, BufferedWriter writer) {
         try { writer.write(f.stringForFile() + "\n");}
         catch(Exception e) {System.err.format("IOException (writing line): %s%n", e);}
     }
@@ -51,19 +48,5 @@ public class SettingsManager {
     
     public Settings getSettings() {
         return settings;
-    }
-
-    /**
-     * @return the GUI
-     */
-    public MainGUI getGUI() {
-        return GUI;
-    }
-
-    /**
-     * @param GUI the GUI to set
-     */
-    public void setGUI(MainGUI GUI) {
-        this.GUI = GUI;
     }
 }

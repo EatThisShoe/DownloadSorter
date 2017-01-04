@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter.Filters;
+package downloadsorter.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,13 @@ import java.util.List;
  *
  * @author Eric
  */
-public class Filter {
+public class FileOperation {
     private List<SourceRule> sources;
     private List<FilterRule> filters;
     private List<DestinationRule> destinations;
     String name;
     
-    public Filter(List<SourceRule> s, List<FilterRule> f, List<DestinationRule> d, String name) {
+    public FileOperation(List<SourceRule> s, List<FilterRule> f, List<DestinationRule> d, String name) {
         sources = s;
         filters = f;
         destinations = d;

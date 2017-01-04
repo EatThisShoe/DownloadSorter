@@ -5,7 +5,7 @@
  */
 package downloadsorter;
 
-import downloadsorter.Filters.Filter;
+import downloadsorter.model.FileOperation;
 
 /**
  *
@@ -19,7 +19,7 @@ public class FileSorter implements Runnable {
     }
     
     public void run() {
-        for (Filter filter : settings.getFilters()) {
+        for (FileOperation filter : settings.getFilters()) {
             filter.FilterFiles();
         }
     }

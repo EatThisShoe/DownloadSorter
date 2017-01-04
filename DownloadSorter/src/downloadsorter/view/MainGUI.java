@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter.GUI;
+package downloadsorter.view;
 
 import downloadsorter.Factories.DestinationFactory;
 import downloadsorter.Factories.FilterRuleFactory;
 import downloadsorter.Factories.SourceFactory;
 import downloadsorter.FileSorter;
-import downloadsorter.Filters.DestinationRule;
-import downloadsorter.Filters.Filter;
-import downloadsorter.Filters.FilterRule;
-import downloadsorter.Filters.SourceRule;
+import downloadsorter.model.DestinationRule;
+import downloadsorter.model.FileOperation;
+import downloadsorter.model.FilterRule;
+import downloadsorter.model.SourceRule;
 import downloadsorter.Settings;
 import downloadsorter.SettingsManager;
 import java.awt.GridBagConstraints;
@@ -279,7 +279,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_browseSourceButtonActionPerformed
 
     private void filterListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_filterListValueChanged
-        Filter selectedFilter = filterList.getSelectedValue();
+        FileOperation selectedFilter = filterList.getSelectedValue();
         displayFilterInFields(selectedFilter);
     }//GEN-LAST:event_filterListValueChanged
 
@@ -294,11 +294,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_browseDestinationButtonActionPerformed
 
     private void saveFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFilterButtonActionPerformed
-        Filter filter = readFilterFromFields();
+        FileOperation filter = readFilterFromFields();
         settings.getSettings().replaceFilter(filterList.getSelectedIndex(), filter);
     }//GEN-LAST:event_saveFilterButtonActionPerformed
 
-    private Filter readFilterFromFields() {
+    private FileOperation readFilterFromFields() {
         String srcString = ""; 
         String filtString = ""; 
         String destString = "";
@@ -318,10 +318,10 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
         List<DestinationRule> destinations = new ArrayList();
         destinations.add(destination);
         
-        return new Filter(sources, filters, destinations, nameTextField.getText());
+        return new FileOperation(sources, filters, destinations, nameTextField.getText());
     }
     
-    private void displayFilterInFields(Filter filter) {
+    private void displayFilterInFields(FileOperation filter) {
         nameTextField.setText(filter.toString());
         
         List sources = filter.getSources();
@@ -383,8 +383,8 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     
     public DefaultListModel getFilterModel() {
         DefaultListModel dlm = new DefaultListModel();
-        List<Filter> lf = settings.getSettings().getFilters(); 
-        for (Filter f : lf)
+        List<FileOperation> lf = settings.getSettings().getFilters(); 
+        for (FileOperation f : lf)
             dlm.addElement(f);
         return dlm;
     }
@@ -424,7 +424,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable {
     private javax.swing.JComboBox<String> destinationSelector;
     private javax.swing.JTextField destinationTextField;
     private javax.swing.JLabel filterLabel;
-    private javax.swing.JList<Filter> filterList;
+    private javax.swing.JList<FileOperation> filterList;
     private javax.swing.JComboBox<String> filterSelector;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

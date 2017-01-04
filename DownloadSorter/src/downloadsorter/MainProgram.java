@@ -5,7 +5,7 @@
  */
 package downloadsorter;
 
-import downloadsorter.GUI.MainGUI;
+import downloadsorter.view.MainGUI;
 
 /**
  *
@@ -18,7 +18,7 @@ public class MainProgram {
      */
     public static void main(String[] args) {
         SettingsManager settings = new SettingsManager();
-        MainGUI mainWindow = settings.getGUI();
+        MainGUI mainWindow = new MainGUI(settings);
         Thread GUI = new Thread(mainWindow);
         GUI.start();
     }

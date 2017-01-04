@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter.Filters;
+package downloadsorter.model;
 
+import downloadsorter.FXMain;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -12,18 +13,23 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 
 /**
  *
  * @author Eric
  */
-public class FansubFilter implements FilterRule {
+public class FansubFilter implements FilterRule, Rule {
+    static final String fxmlPath = "view/rulepanes/FansubFilter.fxml";
 
     @Override
     public List<FileMetaData> filterFiles(List<FileMetaData> fansubs) {
         return fansubs.stream()
                     .map(f -> setSeriesName(f))
-                    .filter(f -> !f.getAttribute("series name").equals(""))
+                    .filter(f -> f.getAttribute(FileAttributes.seriesName) != null)
                     .filter(f -> findSameSeries(fansubs, f))
                     .filter(f -> !Files.isDirectory(f.getPath())) //should remove directories after counting them for duplicates
                     .collect(Collectors.toList());
@@ -32,13 +38,12 @@ public class FansubFilter implements FilterRule {
     private Boolean findSameSeries(List<FileMetaData> allFiles, FileMetaData aFile) {
         Boolean hasSeriesMatch = false;
         for(FileMetaData file : allFiles) {
-            String series1 = file.getAttribute("series name");
-            String series2 = aFile.getAttribute("series name");
+            String series1 = file.getAttribute(FileAttributes.seriesName);
+            String series2 = aFile.getAttribute(FileAttributes.seriesName);
             if(series1 != null && series2 != null && series1.equals(series2))
-                    hasSeriesMatch = true;
+                hasSeriesMatch = true;
         }
         return hasSeriesMatch;
-        //return allFiles.stream().anyMatch(a -> a.getAttribute("series name").equals(aFile.getAttribute("series name")) && a.getPath() != aFile.getPath());
     }
     
     private FileMetaData setSeriesName(FileMetaData file) {
@@ -48,14 +53,24 @@ public class FansubFilter implements FilterRule {
         Boolean b = m.find();
         
         if(b)
-            file.addAttribute("series name", m.group(1).trim());
-        else
-            file.addAttribute("series name", "");
+            file.addAttribute(FileAttributes.seriesName, m.group(1).trim());
+//        else
+//            file.addAttribute("series name", "");
         return file;
+    }
+    @Override
+    public String getDescription() {
+        return "Include anime Fansubs";
     }
     
     @Override
     public String toString() {
         return ("FansubFilter,");
+    }
+    
+
+    @Override
+    public String getFXMLPath() {
+        return fxmlPath;
     }
 }

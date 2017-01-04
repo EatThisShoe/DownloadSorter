@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter.Filters;
-
-import java.nio.file.Path;
-import java.util.List;
+package downloadsorter.model;
 
 /**
  *
  * @author Eric
  */
-public interface SourceRule {
-    public List<FileMetaData> getFiles();
-    public String toString();
+public interface Rule {
+    String getFXMLPath();
+    String getDescription();
 }

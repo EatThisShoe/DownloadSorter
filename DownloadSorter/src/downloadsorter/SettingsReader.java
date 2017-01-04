@@ -8,10 +8,10 @@ package downloadsorter;
 import downloadsorter.Factories.DestinationFactory;
 import downloadsorter.Factories.FilterRuleFactory;
 import downloadsorter.Factories.SourceFactory;
-import downloadsorter.Filters.DestinationRule;
-import downloadsorter.Filters.Filter;
-import downloadsorter.Filters.FilterRule;
-import downloadsorter.Filters.SourceRule;
+import downloadsorter.model.DestinationRule;
+import downloadsorter.model.FileOperation;
+import downloadsorter.model.FilterRule;
+import downloadsorter.model.SourceRule;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class SettingsReader {
     }
     
     public final Settings readSettingsFile() {
-        List<Filter> filtersFromFile = new ArrayList<>();
+        List<FileOperation> filtersFromFile = new ArrayList<>();
         
         if (Files.exists(settingsPath)) {
             try {
@@ -66,7 +66,7 @@ public class SettingsReader {
                             }
                         }
                         if (!(sources.isEmpty() || filters.isEmpty() || destinations.isEmpty())) {
-                            Filter f = new Filter(sources, filters, destinations, name);
+                            FileOperation f = new FileOperation(sources, filters, destinations, name);
                             filtersFromFile.add(f);
                         }
                     }

@@ -5,6 +5,8 @@
  */
 package downloadsorter.Filters;
 
+import downloadsorter.model.FileMetaData;
+import downloadsorter.model.FileAttributes;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.After;
@@ -62,9 +64,9 @@ public class FileMetaDataTest {
         String key = "";
         Path p = Paths.get("/nothere");
         FileMetaData instance = new FileMetaData(p);
-        instance.addAttribute("test", "test");
+        instance.addAttribute(FileAttributes.seriesName, "test");
         String expResult = "test";
-        String result = instance.getAttribute("test");
+        String result = instance.getAttribute(FileAttributes.seriesName);
         assertEquals(expResult, result);
     }
 

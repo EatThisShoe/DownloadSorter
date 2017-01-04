@@ -5,6 +5,8 @@
  */
 package downloadsorter.Filters;
 
+import downloadsorter.model.FileMetaData;
+import downloadsorter.model.DirectorySource;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

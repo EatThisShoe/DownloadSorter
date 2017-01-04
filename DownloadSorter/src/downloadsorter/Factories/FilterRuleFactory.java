@@ -5,8 +5,8 @@
  */
 package downloadsorter.Factories;
 
-import downloadsorter.Filters.FansubFilter;
-import downloadsorter.Filters.FilterRule;
+import downloadsorter.model.FansubFilter;
+import downloadsorter.model.FilterRule;
 
 /**
  *

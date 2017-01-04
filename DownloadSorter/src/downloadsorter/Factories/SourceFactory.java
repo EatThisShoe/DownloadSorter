@@ -5,8 +5,8 @@
  */
 package downloadsorter.Factories;
 
-import downloadsorter.Filters.DirectorySource;
-import downloadsorter.Filters.SourceRule;
+import downloadsorter.model.DirectorySource;
+import downloadsorter.model.SourceRule;
 
 /**
  *

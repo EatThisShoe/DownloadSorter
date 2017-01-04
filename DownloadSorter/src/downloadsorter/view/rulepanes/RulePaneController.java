@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter.Filters;
+package downloadsorter.view.rulepanes;
 
-import java.nio.file.Path;
-import java.util.List;
+import downloadsorter.model.Rule;
 
 /**
  *
  * @author Eric
  */
-public interface DestinationRule {
-    public void moveFiles(List<FileMetaData> l);
+public interface RulePaneController<T extends Rule> {
+     T getRule();
+    void setRule(T rule);
 }

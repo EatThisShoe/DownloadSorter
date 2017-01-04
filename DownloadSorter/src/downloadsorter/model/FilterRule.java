@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package downloadsorter.Filters;
+package downloadsorter.model;
 
-import java.nio.file.Path;
 import java.util.List;
 
 /**
  *
  * @author Eric
  */
-public interface FilterRule {
+public interface FilterRule extends Rule {
     public List<FileMetaData> filterFiles(List<FileMetaData> l);
 }
