@@ -6,14 +6,20 @@
 package downloadsorter.view;
 
 import downloadsorter.FXMain;
+import downloadsorter.model.DestinationNamedDirectories;
 import downloadsorter.model.DestinationRule;
+import downloadsorter.model.DirectorySource;
+import downloadsorter.model.FansubFilter;
 import downloadsorter.model.FileOperation;
 import downloadsorter.model.FilterRule;
 import downloadsorter.model.Rule;
 import downloadsorter.model.SourceRule;
 import downloadsorter.view.rulepanes.RuleSelectorController;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,7 +38,6 @@ public class RuleEditorController implements Initializable {
     private ObservableList<RuleItem<SourceRule>> sources;
     private ObservableList<RuleItem<FilterRule>> filters;
     private ObservableList<RuleItem<DestinationRule>> destinations;
-    private FileOperation displayedOperation;
 
     /**
      * Initializes the controller class.
@@ -44,46 +49,60 @@ public class RuleEditorController implements Initializable {
         destinations = FXCollections.observableArrayList();
     }    
     
-    public void setFilter(FileOperation selectedOperation) {
-        displayedOperation = selectedOperation;
+    public void setFileOperation(FileOperation selectedOperation) {
+        ruleList.getChildren().clear();
         sources.clear();
         filters.clear();
         destinations.clear();
         selectedOperation.getSources().forEach(rule -> sources.add(new RuleItem(rule)));
         selectedOperation.getFilters().forEach(rule -> filters.add(new RuleItem(rule)));
         selectedOperation.getDestinations().forEach(rule -> destinations.add(new RuleItem(rule)));
-        
-        for (RuleItem ri: sources){
-              ruleList.getChildren().add(ri.pane);
-        }
-        for (RuleItem ri: filters){
-              ruleList.getChildren().add(ri.pane);
-        }
-        for (RuleItem ri: destinations){
-              ruleList.getChildren().add(ri.pane);
-        }
+        sources.forEach(ruleItem -> ruleList.getChildren().add(ruleItem.pane));
+        filters.forEach(ruleItem -> ruleList.getChildren().add(ruleItem.pane));
+        destinations.forEach(ruleItem -> ruleList.getChildren().add(ruleItem.pane));
     }
 
     public void remove(VBox ruleSelector) {
         ruleList.getChildren().remove(ruleSelector);
-        for (RuleItem r : sources) {
-            if (r.pane == ruleSelector) {
-                sources.remove(r);
-                break;
-            }
+        sources.removeIf( r-> r.pane == ruleSelector);
+        filters.removeIf( r-> r.pane == ruleSelector);
+        destinations.removeIf( r-> r.pane == ruleSelector);
+    }
+
+    public void saveOperation(FileOperation displayedOperation) {
+        if(displayedOperation != null) {
+            displayedOperation.setSources(saveRuleList(sources));
+            displayedOperation.setFilters(saveRuleList(filters));
+            displayedOperation.setDestinations(saveRuleList(destinations));
         }
-        for (RuleItem r : filters) {
-            if (r.pane == ruleSelector) {
-                filters.remove(r);
-                break;
-            }
-        }
-        for (RuleItem r : destinations) {
-            if (r.pane == ruleSelector) {
-                destinations.remove(r);
-                break;
-            }
-        }
+    }
+
+    private <T extends Rule> ObservableList<T> saveRuleList( ObservableList<RuleItem<T>> ruleItemList) {
+        ruleItemList.forEach((RuleItem r) -> r.rule = r.controller.saveRule());
+        ObservableList<T> ruleList = FXCollections.observableArrayList();
+        ruleItemList.forEach(r -> ruleList.add(r.rule));
+        return ruleList;
+    }
+
+    public void addNewSourceRule() {
+        DirectorySource newRule = new DirectorySource();
+        RuleItem newItem = new RuleItem(newRule);
+        sources.add(newItem);
+        ruleList.getChildren().add(newItem.pane);
+    }
+    
+    void addNewFilterRule() {
+        FansubFilter newRule = new FansubFilter();
+        RuleItem newItem = new RuleItem(newRule);
+        filters.add(newItem);
+        ruleList.getChildren().add(newItem.pane);
+    }
+    
+    void addNewDestRule() {
+        DestinationNamedDirectories newRule = new DestinationNamedDirectories();
+        RuleItem newItem = new RuleItem(newRule);
+        destinations.add(newItem);
+        ruleList.getChildren().add(newItem.pane);
     }
     
     class RuleItem<T extends Rule> {

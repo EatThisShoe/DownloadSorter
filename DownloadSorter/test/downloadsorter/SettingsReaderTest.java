@@ -5,7 +5,9 @@
  */
 package downloadsorter;
 
+import downloadsorter.model.FileOperation;
 import java.nio.file.Paths;
+import javafx.collections.ObservableList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,8 +47,8 @@ public class SettingsReaderTest {
     public void testReadSettingsFile() {
         System.out.println("readSettingsFile: Bad path returns empty list");
         SettingsReader instance = new SettingsReader(Paths.get("notarealpath"));
-        Settings set = instance.readSettingsFile();
-        int result = set.getFilters().size();
+        ObservableList<FileOperation> set = instance.readSettingsFile();
+        int result = set.size();
         System.out.println(result);
         assertEquals(result, 0);
     }

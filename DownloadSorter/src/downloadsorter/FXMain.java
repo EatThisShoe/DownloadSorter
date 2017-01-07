@@ -61,8 +61,8 @@ public class FXMain extends Application {
         }
     }
     
-    public ObservableList<FileOperation> getFiltersList() {
-        return settings.getSettings().getFilters();
+    public ObservableList<FileOperation> getFileOperations() {
+        return settings.getSettings();
     }
 
     /**

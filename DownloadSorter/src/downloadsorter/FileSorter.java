@@ -6,20 +6,21 @@
 package downloadsorter;
 
 import downloadsorter.model.FileOperation;
+import java.util.List;
 
 /**
  *
  * @author Eric
  */
 public class FileSorter implements Runnable {
-    final Settings settings;
+    final List<FileOperation> active;
     
-    public FileSorter(Settings init) {
-        settings = init;
+    public FileSorter(List<FileOperation> active) {
+        this.active = active;
     }
     
     public void run() {
-        for (FileOperation filter : settings.getFilters()) {
+        for (FileOperation filter : active) {
             filter.FilterFiles();
         }
     }

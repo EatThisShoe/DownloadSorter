@@ -27,7 +27,7 @@ public class DestinationNamedDirectories implements DestinationRule, Rule {
     }
     
     public DestinationNamedDirectories(){
-        baseDirectory = null;
+        baseDirectory = Paths.get("");
     }
 
     @Override

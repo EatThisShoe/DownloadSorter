@@ -8,3 +8,12 @@ DESTINATIONRULES
 DestinationNamedDirectories,D:\Torrents
 ENDFILTER
 
+FILTER
+test2
+SOURCERULES
+DirectorySource,D:\images,
+FILTERRULES
+FansubFilter,
+DESTINATIONRULES
+DestinationNamedDirectories,D:\Torrents
+ENDFILTER

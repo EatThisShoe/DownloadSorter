@@ -9,9 +9,8 @@
    <children>
       <FlowPane prefHeight="25.0" prefWidth="600.0">
          <children>
-            <ChoiceBox fx:id="ruleSelector" prefWidth="150.0" />
+            <ChoiceBox fx:id="ruleSelector" prefHeight="25.0" prefWidth="256.0" />
             <Button fx:id="removeButton" mnemonicParsing="false" text="Remove" />
-            <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
          </children>
       </FlowPane>
    </children>

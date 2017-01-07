@@ -15,7 +15,6 @@ import downloadsorter.model.Rule;
 import downloadsorter.model.SourceRule;
 import downloadsorter.view.RuleEditorController;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,7 +30,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
-import javax.swing.event.ChangeEvent;
 
 /**
  * FXML Controller class
@@ -44,8 +42,6 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
     ChoiceBox<T> ruleSelector;
     @FXML
     Button removeButton;
-    @FXML
-    Button saveButton;
     @FXML
     VBox basePane;
     
@@ -78,7 +74,6 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
             public void handle(Event event) {
                 parent.remove(basePane);
             }
-            
         });
     }    
     
@@ -124,9 +119,13 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
             e.printStackTrace();
         }
     }
-    
-    public T getRule() {
-        return ruleControl.getRule();
+
+    public T saveRule() {
+        int index = ruleSelector.getSelectionModel().getSelectedIndex();
+        T rule = ruleControl.getRule();
+        ruleSelector.getItems().set(index, rule);
+        ruleSelector.getSelectionModel().select(rule);
+        return rule;
     }
     
     

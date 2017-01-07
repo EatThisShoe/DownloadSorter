@@ -7,22 +7,31 @@ package downloadsorter.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author Eric
  */
 public class FileOperation {
-    private List<SourceRule> sources;
-    private List<FilterRule> filters;
-    private List<DestinationRule> destinations;
-    String name;
+    private ObservableList<SourceRule> sources;
+    private ObservableList<FilterRule> filters;
+    private ObservableList<DestinationRule> destinations;
+    private String name;
     
     public FileOperation(List<SourceRule> s, List<FilterRule> f, List<DestinationRule> d, String name) {
-        sources = s;
-        filters = f;
-        destinations = d;
+        sources = FXCollections.observableArrayList(s);
+        filters = FXCollections.observableArrayList(f);
+        destinations = FXCollections.observableArrayList(d);
         this.name = name;
+    }
+    
+    public FileOperation() {
+        name = "new";
+        sources = FXCollections.observableArrayList();
+        filters = FXCollections.observableArrayList();
+        destinations = FXCollections.observableArrayList();
     }
     
     public void FilterFiles() {
@@ -49,7 +58,7 @@ public class FileOperation {
         for(DestinationRule dest : getDestinations())
             destStr += dest.toString();
         return ("FILTER\n"
-                + name + "\n"
+                + getName() + "\n"
                 + "SOURCERULES\n"
                 + srcStr + "\n"
                 + "FILTERRULES\n"
@@ -72,48 +81,64 @@ public class FileOperation {
     }
     
     public String toString() {
-        return name;
+        return getName();
     }
 
     /**
      * @return the sources
      */
-    public List<SourceRule> getSources() {
+    public ObservableList<SourceRule> getSources() {
         return sources;
     }
 
     /**
      * @param sources the sources to set
      */
-    public void setSources(List<SourceRule> sources) {
+    public void setSources(ObservableList<SourceRule> sources) {
         this.sources = sources;
     }
 
     /**
      * @return the filters
      */
-    public List<FilterRule> getFilters() {
+    public ObservableList<FilterRule> getFilters() {
         return filters;
     }
 
     /**
      * @param filters the filters to set
      */
-    public void setFilters(List<FilterRule> filters) {
+    public void setFilters(ObservableList<FilterRule> filters) {
         this.filters = filters;
     }
 
     /**
      * @return the destinations
      */
-    public List<DestinationRule> getDestinations() {
+    public ObservableList<DestinationRule> getDestinations() {
         return destinations;
     }
 
     /**
      * @param destinations the destinations to set
      */
-    public void setDestinations(List<DestinationRule> destinations) {
+    public void setDestinations(ObservableList<DestinationRule> destinations) {
         this.destinations = destinations;
     }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
 }

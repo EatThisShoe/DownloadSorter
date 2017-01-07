@@ -6,13 +6,17 @@
 package downloadsorter.view;
 
 import downloadsorter.FXMain;
+import downloadsorter.FileSorter;
 import downloadsorter.model.FileOperation;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -24,14 +28,23 @@ import javafx.scene.layout.VBox;
  */
 public class MainWindowController implements Initializable {
     @FXML
-    private ListView<FileOperation> filterList;
+    private ListView<FileOperation> operationList;
     @FXML
     private AnchorPane editorPane;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button addSourceButton;
+    @FXML
+    private Button addFilterButton;
+    @FXML
+    private Button addDestButton;
     
     private VBox ruleEditor;
     private RuleEditorController editor;
     private FXMain mainApp;
-    private FileOperation selectedFilter;
     /**
      * Initializes the controller class.
      */
@@ -39,13 +52,44 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showRuleEditor();
-        filterList.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-//                    displayFilter(newValue);
-                    selectedFilter = newValue;
-                    editor.setFilter(selectedFilter);
+        operationList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    editor.saveOperation(oldValue);
+                    editor.setFileOperation(newValue);
                 }
         );
+        startButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                FileSorter sortingLoop = new FileSorter(operationList.getItems());
+                Thread sortLoop = new Thread(sortingLoop);
+                sortLoop.start();
+                System.out.println("File Operations finished.");
+            }
+        });
+        addButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                operationList.getItems().add(new FileOperation());
+            }
+        });
+        addSourceButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                editor.addNewSourceRule();
+            }
+        });
+        addFilterButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                editor.addNewFilterRule();
+            }
+        });
+        addDestButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                editor.addNewDestRule();
+            }
+        });
     }
     
     private void showRuleEditor() {
@@ -62,7 +106,11 @@ public class MainWindowController implements Initializable {
     
     public void setMainApp(FXMain main) {
         mainApp = main;
-        ObservableList<FileOperation> l = mainApp.getFiltersList();
-        filterList.setItems(l);
+        ObservableList<FileOperation> l = mainApp.getFileOperations();
+        operationList.setItems(l);
+    }
+    
+    private void saveOperations() {
+        operationList.getItems().forEach(fileOp -> editor.saveOperation(fileOp));
     }
 }

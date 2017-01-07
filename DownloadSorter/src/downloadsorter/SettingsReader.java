@@ -17,7 +17,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -32,8 +33,8 @@ public class SettingsReader {
         lines = new ArrayList<>();
     }
     
-    public final Settings readSettingsFile() {
-        List<FileOperation> filtersFromFile = new ArrayList<>();
+    public final ObservableList<FileOperation> readSettingsFile() {
+        ObservableList<FileOperation> filtersFromFile = FXCollections.observableArrayList();
         
         if (Files.exists(settingsPath)) {
             try {
@@ -76,6 +77,6 @@ public class SettingsReader {
             System.out.println("settings file not found");
         }
         
-        return new Settings(filtersFromFile);
+        return filtersFromFile;
     }
 }
