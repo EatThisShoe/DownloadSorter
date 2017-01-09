@@ -66,10 +66,10 @@ public class SettingsReader {
                                 }
                             }
                         }
-                        if (!(sources.isEmpty() || filters.isEmpty() || destinations.isEmpty())) {
+                        //if (!(sources.isEmpty() || filters.isEmpty() || destinations.isEmpty())) {
                             FileOperation f = new FileOperation(sources, filters, destinations, name);
                             filtersFromFile.add(f);
-                        }
+                        //}
                     }
                 }
             } catch(Exception e) {System.err.format("IOException: %s%n", e);}

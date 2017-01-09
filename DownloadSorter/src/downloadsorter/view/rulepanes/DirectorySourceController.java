@@ -48,7 +48,7 @@ public class DirectorySourceController implements Initializable, RulePaneControl
                 Stage ownerWindow = new Stage();
                 String filePath = dirChooser.showDialog(ownerWindow).toString();
                 StringBuilder oldText = new StringBuilder(txtDirectories.getText());
-                if (oldText.charAt(oldText.length()-1) != '\n') {
+                if (oldText.length() > 0 && oldText.charAt(oldText.length()-1) != '\n') {
                     oldText.append('\n');
                 }
                 oldText.append(filePath + "\n");

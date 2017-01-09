@@ -35,6 +35,7 @@
                               <Button fx:id="addSourceButton" layoutX="-1.0" layoutY="25.0" mnemonicParsing="false" text="Add Source Rule" />
                               <Button fx:id="addDestButton" layoutX="218.0" layoutY="25.0" mnemonicParsing="false" text="Add Destination" />
                               <Button fx:id="addFilterButton" layoutX="114.0" layoutY="25.0" mnemonicParsing="false" text="Add Filter Rule" />
+                              <Button fx:id="deleteButton" layoutX="262.0" layoutY="2.0" mnemonicParsing="false" text="Delete File Operation" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

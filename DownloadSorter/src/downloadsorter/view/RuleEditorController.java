@@ -16,10 +16,7 @@ import downloadsorter.model.Rule;
 import downloadsorter.model.SourceRule;
 import downloadsorter.view.rulepanes.RuleSelectorController;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -70,11 +67,9 @@ public class RuleEditorController implements Initializable {
     }
 
     public void saveOperation(FileOperation displayedOperation) {
-        if(displayedOperation != null) {
             displayedOperation.setSources(saveRuleList(sources));
             displayedOperation.setFilters(saveRuleList(filters));
             displayedOperation.setDestinations(saveRuleList(destinations));
-        }
     }
 
     private <T extends Rule> ObservableList<T> saveRuleList( ObservableList<RuleItem<T>> ruleItemList) {

@@ -35,7 +35,7 @@ public class SettingsManager {
         } catch(Exception e) {System.err.format("IOException (creating settings writer): %s%n", e);}
     }
     
-    void writeFileOperation(FileOperation f, BufferedWriter writer) {
+    private void writeFileOperation(FileOperation f, BufferedWriter writer) {
         try { writer.write(f.stringForFile() + "\n");}
         catch(Exception e) {System.err.format("IOException (writing line): %s%n", e);}
     }

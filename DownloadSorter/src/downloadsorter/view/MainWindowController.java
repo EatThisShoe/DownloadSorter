@@ -41,6 +41,8 @@ public class MainWindowController implements Initializable {
     private Button addFilterButton;
     @FXML
     private Button addDestButton;
+    @FXML
+    private Button deleteButton;
     
     private VBox ruleEditor;
     private RuleEditorController editor;
@@ -53,7 +55,10 @@ public class MainWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showRuleEditor();
         operationList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    editor.saveOperation(oldValue);
+                    if(oldValue != null){
+                        editor.saveOperation(oldValue);
+                        writeOperations();
+                    }
                     editor.setFileOperation(newValue);
                 }
         );
@@ -70,24 +75,37 @@ public class MainWindowController implements Initializable {
             @Override
             public void handle(Event event) {
                 operationList.getItems().add(new FileOperation());
+                writeOperations();
+            }
+        });
+        deleteButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                FileOperation toDelete = operationList.getSelectionModel().getSelectedItem();
+                operationList.getItems().remove(toDelete);
+                operationList.getSelectionModel().selectFirst();
+                writeOperations();
             }
         });
         addSourceButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 editor.addNewSourceRule();
+                writeOperations();
             }
         });
         addFilterButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 editor.addNewFilterRule();
+                writeOperations();
             }
         });
         addDestButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 editor.addNewDestRule();
+                writeOperations();
             }
         });
     }
@@ -110,7 +128,8 @@ public class MainWindowController implements Initializable {
         operationList.setItems(l);
     }
     
-    private void saveOperations() {
-        operationList.getItems().forEach(fileOp -> editor.saveOperation(fileOp));
+    private void writeOperations() {
+        //operationList.getItems().forEach(fileOp -> editor.saveOperation(fileOp));
+        mainApp.saveToDisk();
     }
 }

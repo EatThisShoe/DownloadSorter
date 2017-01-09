@@ -71,5 +71,9 @@ public class FXMain extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public void saveToDisk() {
+        settings.writeSettingsFile();
+    }
     
 }
