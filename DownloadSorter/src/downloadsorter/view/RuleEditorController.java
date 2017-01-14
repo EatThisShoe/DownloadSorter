@@ -35,6 +35,7 @@ public class RuleEditorController implements Initializable {
     private ObservableList<RuleItem<SourceRule>> sources;
     private ObservableList<RuleItem<FilterRule>> filters;
     private ObservableList<RuleItem<DestinationRule>> destinations;
+    private MainWindowController mainWindow;
 
     /**
      * Initializes the controller class.
@@ -99,6 +100,10 @@ public class RuleEditorController implements Initializable {
         destinations.add(newItem);
         ruleList.getChildren().add(newItem.pane);
     }
+
+    void setMainWindow(MainWindowController main) {
+        mainWindow = main;
+    }
     
     class RuleItem<T extends Rule> {
         public T rule;
@@ -111,7 +116,7 @@ public class RuleEditorController implements Initializable {
                 loader.setLocation(FXMain.class.getResource("view/rulepanes/RuleSelector.fxml"));
                 pane = (VBox) loader.load();
                 controller = loader.getController();
-                controller.setParentController(RuleEditorController.this);
+                controller.setParentController(RuleEditorController.this, mainWindow);
                 controller.setComboBox(rule);
                 controller.setRulePane(rule);
             } catch (Exception e) {

@@ -19,7 +19,7 @@ public class DestinationNamedDirectories implements DestinationRule, Rule {
     private Path baseDirectory;
     
     public DestinationNamedDirectories(String[] fileInput) {
-        baseDirectory = Paths.get(fileInput[1]);
+            baseDirectory = Paths.get(fileInput[1]);
     }
     
     public DestinationNamedDirectories(Path p) {
@@ -51,8 +51,8 @@ public class DestinationNamedDirectories implements DestinationRule, Rule {
     
     @Override
     public String toString() {
-        String s = "DestinationNamedDirectories,";
-        s = s.concat(getBaseDirectory().toString());
+        String s = DestinationNamedDirectories.class.getCanonicalName() + ",";
+        s = s.concat(getBaseDirectory().toString() + ",");
         return s;
     }
 

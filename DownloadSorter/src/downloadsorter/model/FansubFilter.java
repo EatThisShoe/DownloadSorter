@@ -65,7 +65,7 @@ public class FansubFilter implements FilterRule, Rule {
     
     @Override
     public String toString() {
-        return ("FansubFilter,");
+        return (FansubFilter.class.getCanonicalName() + ",");
     }
     
 

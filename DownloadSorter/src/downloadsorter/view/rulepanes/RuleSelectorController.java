@@ -5,16 +5,13 @@
  */
 package downloadsorter.view.rulepanes;
 
+import downloadsorter.AllRules;
 import downloadsorter.FXMain;
-import downloadsorter.model.DestinationNamedDirectories;
-import downloadsorter.model.DestinationRule;
-import downloadsorter.model.DirectorySource;
-import downloadsorter.model.FansubFilter;
-import downloadsorter.model.FilterRule;
 import downloadsorter.model.Rule;
-import downloadsorter.model.SourceRule;
+import downloadsorter.view.MainWindowController;
 import downloadsorter.view.RuleEditorController;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -47,6 +44,7 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
     
     FlowPane rulePane;
     RuleEditorController parent;
+    MainWindowController mainWindow;
     RulePaneController<T> ruleControl;
     /**
      * Initializes the controller class.
@@ -73,28 +71,20 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
             @Override
             public void handle(Event event) {
                 parent.remove(basePane);
+                //mainWindow.writeOperations();
             }
         });
     }    
     
-    public void setParentController(RuleEditorController parentControl) {
+    public void setParentController(RuleEditorController parentControl, MainWindowController main) {
         parent = parentControl;
+        mainWindow = main;
+        
     }
     
     public void setComboBox(T rule) {
-        ObservableList<T> dummyInstances = FXCollections.observableArrayList();
-        RuleEnum[] ruleType = null;
-        if (rule instanceof SourceRule) {
-            ruleType = SourceType.values();
-        } else if (rule instanceof FilterRule) {
-            ruleType = FilterType.values();
-        } else if (rule instanceof DestinationRule) {
-            ruleType = DestinationType.values();
-        }
-        for (RuleEnum r : ruleType) {
-            T dummy = (T)r.getDummyInstance();
-            dummyInstances.add(dummy);
-        }
+        List<T> allRules = AllRules.getInstance().getRules(rule);
+        ObservableList<T> dummyInstances = FXCollections.observableArrayList(allRules);
         for (T r: dummyInstances) {
             if (r.getClass().equals(rule.getClass())){
                 dummyInstances.set(dummyInstances.indexOf(r), rule);
@@ -129,37 +119,39 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
     }
     
     
-interface RuleEnum {
-    Rule getDummyInstance();
-}
-enum SourceType implements RuleEnum{
-    DirectorySource;
-    
-    public SourceRule getDummyInstance() {
-        switch (this) {
-            case DirectorySource: return new DirectorySource();
-            default: return null;
-        }
-    }
-}
-enum FilterType implements RuleEnum{
-    FansubFilter;
-    
-    public FilterRule getDummyInstance() {
-        switch (this) {
-            case FansubFilter: return new FansubFilter();
-            default: return null;
-        }
-    }
-}
-enum DestinationType implements RuleEnum{
-    DestinationNamedDirectories;
-    
-    public DestinationRule getDummyInstance() {
-        switch (this) {
-            case DestinationNamedDirectories: return new DestinationNamedDirectories();
-            default: return null;
-        }
-    }
-}
+//interface RuleEnum {
+//    Rule getDummyInstance();
+//}
+//enum SourceType implements RuleEnum{
+//    DirectorySource;
+//    
+//    public SourceRule getDummyInstance() {
+//        switch (this) {
+//            case DirectorySource: return new DirectorySource();
+//            default: return null;
+//        }
+//    }
+//}
+//enum FilterType implements RuleEnum{
+//    FansubFilter,
+//    FilterByList;
+//    
+//    public FilterRule getDummyInstance() {
+//        switch (this) {
+//            case FansubFilter: return new FansubFilter();
+//            case FilterByList: return new FilterByList();
+//            default: return null;
+//        }
+//    }
+//}
+//enum DestinationType implements RuleEnum{
+//    DestinationNamedDirectories;
+//    
+//    public DestinationRule getDummyInstance() {
+//        switch (this) {
+//            case DestinationNamedDirectories: return new DestinationNamedDirectories();
+//            default: return null;
+//        }
+//    }
+//}
 }

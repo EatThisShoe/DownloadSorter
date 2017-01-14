@@ -68,7 +68,7 @@ public class MainWindowController implements Initializable {
                 FileSorter sortingLoop = new FileSorter(operationList.getItems());
                 Thread sortLoop = new Thread(sortingLoop);
                 sortLoop.start();
-                System.out.println("File Operations finished.");
+                System.out.println("File Operations started.");
             }
         });
         addButton.setOnAction(new EventHandler() {
@@ -116,6 +116,7 @@ public class MainWindowController implements Initializable {
             loader.setLocation(FXMain.class.getResource("view/RuleEditor.fxml"));
             ruleEditor = (VBox) loader.load();
             editor = loader.getController();
+            editor.setMainWindow(this);
             editorPane.getChildren().add(ruleEditor);
         } catch(Exception e) {
             e.printStackTrace();
@@ -128,7 +129,7 @@ public class MainWindowController implements Initializable {
         operationList.setItems(l);
     }
     
-    private void writeOperations() {
+    public void writeOperations() {
         //operationList.getItems().forEach(fileOp -> editor.saveOperation(fileOp));
         mainApp.saveToDisk();
     }

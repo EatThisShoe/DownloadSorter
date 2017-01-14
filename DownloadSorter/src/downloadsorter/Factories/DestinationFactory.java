@@ -7,6 +7,7 @@ package downloadsorter.Factories;
 
 import downloadsorter.model.DestinationNamedDirectories;
 import downloadsorter.model.DestinationRule;
+import java.lang.reflect.Constructor;
 
 /**
  *
@@ -14,11 +15,19 @@ import downloadsorter.model.DestinationRule;
  */
 public class DestinationFactory {
     public static DestinationRule createDestinationRule(String fileInput) {
-        String[] args = fileInput.split(",");
-        if (args.length > 0) {
-            if (args[0].equals("DestinationNamedDirectories") || args[0].equals("Named Directories"))
-                return new DestinationNamedDirectories(args);
-        }
+        String[] args = fileInput.split(",", -1);
+        try {
+            Class cl = Class.forName(args[0]);
+            Class[] parameters = new Class[1];
+            parameters[0] = args.getClass();
+            Constructor constructor = cl.getConstructor(parameters);
+            DestinationRule rule = (DestinationRule) constructor.newInstance((Object) args);
+            return rule;
+        } catch (Exception e) {}
+//        if (args.length > 0) {
+//            if (args[0].equals("DestinationNamedDirectories") || args[0].equals("Named Directories"))
+//                return new DestinationNamedDirectories(args);
+//        }
         return null;
     }
 }

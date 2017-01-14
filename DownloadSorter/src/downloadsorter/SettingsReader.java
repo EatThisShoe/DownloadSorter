@@ -12,6 +12,7 @@ import downloadsorter.model.DestinationRule;
 import downloadsorter.model.FileOperation;
 import downloadsorter.model.FilterRule;
 import downloadsorter.model.SourceRule;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -72,7 +73,10 @@ public class SettingsReader {
                         //}
                     }
                 }
-            } catch(Exception e) {System.err.format("IOException: %s%n", e);}
+            } catch(IOException e) {
+                System.err.format("IOException: %s%n", e);
+                e.printStackTrace();
+            }
         } else { //defaults
             System.out.println("settings file not found");
         }

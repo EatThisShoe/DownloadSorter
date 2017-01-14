@@ -50,21 +50,21 @@ public class FileOperation {
     public String stringForFile() {
         String srcStr = "";
         for(SourceRule src: getSources())
-            srcStr += src.toString();
+            srcStr += src.toString() + "\n";
         String filtStr = "";
         for(FilterRule filt : getFilters())
-            filtStr += filt.toString();
+            filtStr += filt.toString() + "\n";
         String destStr = "";
         for(DestinationRule dest : getDestinations())
-            destStr += dest.toString();
+            destStr += dest.toString() + "\n";
         return ("FILTER\n"
                 + getName() + "\n"
                 + "SOURCERULES\n"
-                + srcStr + "\n"
+                + srcStr
                 + "FILTERRULES\n"
-                + filtStr + "\n"
+                + filtStr
                 + "DESTINATIONRULES\n"
-                + destStr + "\n"
+                + destStr
                 + "ENDFILTER\n");
     }
     

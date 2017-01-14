@@ -78,7 +78,7 @@ public class DirectorySource implements SourceRule, Rule {
     
     @Override
     public String toString() {
-        String s = "DirectorySource,";
+        String s = DirectorySource.class.getCanonicalName() + ",";
         for(Path p: sourceFolders) {
             s += p.toString() + ",";
         }

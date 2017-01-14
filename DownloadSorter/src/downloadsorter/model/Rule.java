@@ -12,4 +12,6 @@ package downloadsorter.model;
 public interface Rule {
     String getFXMLPath();
     String getDescription();
+    @Override
+    String toString();
 }

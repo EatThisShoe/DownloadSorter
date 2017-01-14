@@ -1,10 +1,20 @@
 FILTER
+new
+SOURCERULES
+downloadsorter.model.DirectorySource,
+FILTERRULES
+downloadsorter.model.FansubFilter,
+DESTINATIONRULES
+downloadsorter.model.DestinationNamedDirectories,,
+ENDFILTER
+
+FILTER
 test
 SOURCERULES
-DirectorySource,D:\Torrents,
+downloadsorter.model.DirectorySource,
 FILTERRULES
-FansubFilter,
+downloadsorter.model.FilterByList,false,false,
 DESTINATIONRULES
-DestinationNamedDirectories,D:\Torrents
+downloadsorter.model.DestinationNamedDirectories,,
 ENDFILTER
 
