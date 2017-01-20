@@ -44,7 +44,7 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
     
     FlowPane rulePane;
     RuleEditorController parent;
-    MainWindowController mainWindow;
+    //MainWindowController mainWindow;
     RulePaneController<T> ruleControl;
     /**
      * Initializes the controller class.
@@ -71,14 +71,12 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
             @Override
             public void handle(Event event) {
                 parent.remove(basePane);
-                //mainWindow.writeOperations();
             }
         });
     }    
     
-    public void setParentController(RuleEditorController parentControl, MainWindowController main) {
+    public void setParentController(RuleEditorController parentControl) {
         parent = parentControl;
-        mainWindow = main;
         
     }
     

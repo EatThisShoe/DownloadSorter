@@ -65,6 +65,7 @@ public class RuleEditorController implements Initializable {
         sources.removeIf( r-> r.pane == ruleSelector);
         filters.removeIf( r-> r.pane == ruleSelector);
         destinations.removeIf( r-> r.pane == ruleSelector);
+        mainWindow.updateSelectedOperation();
     }
 
     public void saveOperation(FileOperation displayedOperation) {
@@ -116,7 +117,7 @@ public class RuleEditorController implements Initializable {
                 loader.setLocation(FXMain.class.getResource("view/rulepanes/RuleSelector.fxml"));
                 pane = (VBox) loader.load();
                 controller = loader.getController();
-                controller.setParentController(RuleEditorController.this, mainWindow);
+                controller.setParentController(RuleEditorController.this);
                 controller.setComboBox(rule);
                 controller.setRulePane(rule);
             } catch (Exception e) {

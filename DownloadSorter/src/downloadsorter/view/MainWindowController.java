@@ -8,6 +8,7 @@ package downloadsorter.view;
 import downloadsorter.FXMain;
 import downloadsorter.FileSorter;
 import downloadsorter.model.FileOperation;
+import java.awt.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,9 +18,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
@@ -54,6 +61,22 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showRuleEditor();
+        operationList.setEditable(true);
+        operationList.setCellFactory(TextFieldListCell.forListView(new StringConverter<FileOperation>() {
+            @Override
+            public FileOperation fromString(String s) {
+                FileOperation fileOp = operationList.getItems().get(operationList.getEditingIndex());
+                fileOp.setName(s);
+                return fileOp;
+            }
+            @Override
+            public String toString(FileOperation r) {
+                return r.getName();
+            }
+        }));
+        operationList.setOnEditCommit(editEvent -> {
+             operationList.getItems().set(editEvent.getIndex(), editEvent.getNewValue());
+        });
         operationList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     if(oldValue != null){
                         editor.saveOperation(oldValue);
@@ -62,51 +85,33 @@ public class MainWindowController implements Initializable {
                     editor.setFileOperation(newValue);
                 }
         );
-        startButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                FileSorter sortingLoop = new FileSorter(operationList.getItems());
-                Thread sortLoop = new Thread(sortingLoop);
-                sortLoop.start();
-                System.out.println("File Operations started.");
-            }
+        startButton.setOnAction(event -> {
+            FileSorter sortingLoop = new FileSorter(operationList.getItems());
+            Thread sortLoop = new Thread(sortingLoop);
+            sortLoop.start();
+            System.out.println("File Operations started.");
         });
-        addButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                operationList.getItems().add(new FileOperation());
-                writeOperations();
-            }
+        addButton.setOnAction((event) -> {
+            operationList.getItems().add(new FileOperation());
+            writeOperations();
         });
-        deleteButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                FileOperation toDelete = operationList.getSelectionModel().getSelectedItem();
-                operationList.getItems().remove(toDelete);
-                operationList.getSelectionModel().selectFirst();
-                writeOperations();
-            }
+        deleteButton.setOnAction((event) -> {
+            FileOperation toDelete = operationList.getSelectionModel().getSelectedItem();
+            operationList.getItems().remove(toDelete);
+            operationList.getSelectionModel().selectFirst();
+            writeOperations();
         });
-        addSourceButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                editor.addNewSourceRule();
-                writeOperations();
-            }
+        addSourceButton.setOnAction((event) -> {
+            editor.addNewSourceRule();
+            writeOperations();
         });
-        addFilterButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                editor.addNewFilterRule();
-                writeOperations();
-            }
+        addFilterButton.setOnAction((event) -> {
+            editor.addNewFilterRule();
+            writeOperations();
         });
-        addDestButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                editor.addNewDestRule();
-                writeOperations();
-            }
+        addDestButton.setOnAction((event) -> {
+            editor.addNewDestRule();
+            writeOperations();
         });
     }
     
@@ -130,7 +135,12 @@ public class MainWindowController implements Initializable {
     }
     
     public void writeOperations() {
-        //operationList.getItems().forEach(fileOp -> editor.saveOperation(fileOp));
         mainApp.saveToDisk();
+    }
+
+    void updateSelectedOperation() {
+        FileOperation fileOp = operationList.getSelectionModel().getSelectedItem();
+        editor.saveOperation(fileOp);
+        writeOperations();
     }
 }

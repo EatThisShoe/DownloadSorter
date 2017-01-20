@@ -5,6 +5,8 @@
  */
 package downloadsorter.model;
 
+import java.util.Map;
+
 /**
  *
  * @author Eric
@@ -12,6 +14,7 @@ package downloadsorter.model;
 public interface Rule {
     String getFXMLPath();
     String getDescription();
+    //Map<String, Class> getFields();
     @Override
     String toString();
 }

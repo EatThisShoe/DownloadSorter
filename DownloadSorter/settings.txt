@@ -1,7 +1,7 @@
 FILTER
-new
+Anime to series folders
 SOURCERULES
-downloadsorter.model.DirectorySource,
+downloadsorter.model.DirectorySource,,,
 FILTERRULES
 downloadsorter.model.FansubFilter,
 DESTINATIONRULES
@@ -9,11 +9,10 @@ downloadsorter.model.DestinationNamedDirectories,,
 ENDFILTER
 
 FILTER
-test
+test3
 SOURCERULES
 downloadsorter.model.DirectorySource,
 FILTERRULES
-downloadsorter.model.FilterByList,false,false,
 DESTINATIONRULES
 downloadsorter.model.DestinationNamedDirectories,,
 ENDFILTER
