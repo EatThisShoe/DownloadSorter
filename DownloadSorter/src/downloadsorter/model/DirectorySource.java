@@ -5,6 +5,8 @@
  */
 package downloadsorter.model;
 
+import downloadsorter.view.rulepanes.DirectoryListField;
+import downloadsorter.view.rulepanes.UIField;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import static java.nio.file.FileVisitResult.CONTINUE;
@@ -13,8 +15,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  *
@@ -88,6 +92,13 @@ public class DirectorySource implements SourceRule, Rule {
     @Override
     public String getFXMLPath() {
         return fxmlPath;
+    }
+
+    @Override
+    public UIField[] getFields() {
+        UIField[] fields = new UIField[1];
+        fields[0] = new DirectoryListField("Directories", sourceFolders);
+        return fields;
     }
     
     
