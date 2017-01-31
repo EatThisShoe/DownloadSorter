@@ -5,10 +5,14 @@
  */
 package downloadsorter.view.rulepanes;
 
+import downloadsorter.FXMain;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.DirectoryChooser;
@@ -23,20 +27,27 @@ public class DirectoryField implements UIField {
     
     
     public DirectoryField(String title, Path location) {
-        fieldPane = new FlowPane();
-        fieldTitle = new Label(title);
-        txtLocation = new TextField(location.toString());
-        browseButton = new Button();
-        fieldPane.getChildren().add(fieldTitle);
-        fieldPane.getChildren().add(txtLocation);
-        fieldPane.getChildren().add(browseButton);
-        browseButton.setOnAction(event -> {
-            DirectoryChooser dirChooser = new DirectoryChooser();
-            dirChooser.setTitle("Select base directory to move files");
-            Stage ownerWindow = new Stage();
-            final String filePath = dirChooser.showDialog(ownerWindow).toString();
-            txtLocation.setText(filePath);
-        });
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL fxmlfile = getClass().getResource("DirectoryField.fxml");
+            loader.setLocation(fxmlfile);
+            fieldPane = (FlowPane) loader.load();
+            fieldTitle = (Label) loader.getNamespace().get("fieldTitle");
+            txtLocation = (TextField) loader.getNamespace().get("txtDirectory");
+            browseButton = (Button) loader.getNamespace().get("browseButton");
+            
+            fieldTitle.setText(title);
+            txtLocation.setText(location.toString());
+            browseButton.setOnAction(event -> {
+                DirectoryChooser dirChooser = new DirectoryChooser();
+                dirChooser.setTitle("Select base directory to move files");
+                Stage ownerWindow = new Stage();
+                final String filePath = dirChooser.showDialog(ownerWindow).toString();
+                txtLocation.setText(filePath);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

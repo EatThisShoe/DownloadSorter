@@ -6,9 +6,7 @@
 package downloadsorter.view.rulepanes;
 
 import downloadsorter.AllRules;
-import downloadsorter.FXMain;
 import downloadsorter.model.Rule;
-import downloadsorter.view.MainWindowController;
 import downloadsorter.view.RuleEditorController;
 import java.net.URL;
 import java.util.List;
@@ -20,11 +18,9 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
@@ -42,13 +38,10 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
     @FXML
     VBox basePane;
     
-    FlowPane rulePane;
+    VBox rulePane;
     RuleEditorController parent;
-    //MainWindowController mainWindow;
     RulePaneController<T> ruleControl;
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ruleSelector.setConverter(new StringConverter<T>() {
@@ -61,17 +54,11 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
                 return r.getDescription();
             }
         });
-        ruleSelector.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<T>() {
-            @Override
-            public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-                setRulePane(newValue);
-            }
+        ruleSelector.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends T> observable, T oldValue, T newValue) -> {
+            setRulePane(newValue);
         });
-        removeButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                parent.remove(basePane);
-            }
+        removeButton.setOnAction((event) -> {
+            parent.remove(basePane);
         });
     }    
     
@@ -93,19 +80,10 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
     }
     
     public void setRulePane(T rule) {
-        
-        String location = rule.getFXMLPath();
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(FXMain.class.getResource(location));
-            basePane.getChildren().remove(rulePane);
-            rulePane = (FlowPane) loader.load();
-            basePane.getChildren().add(rulePane);
-            ruleControl = loader.getController();
-            ruleControl.setRule(rule);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ruleControl = new RulePaneController(rule);
+        basePane.getChildren().remove(rulePane);
+        rulePane = ruleControl.getPane();
+        basePane.getChildren().add(rulePane);
     }
 
     public T saveRule() {
@@ -115,41 +93,4 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
         ruleSelector.getSelectionModel().select(rule);
         return rule;
     }
-    
-    
-//interface RuleEnum {
-//    Rule getDummyInstance();
-//}
-//enum SourceType implements RuleEnum{
-//    DirectorySource;
-//    
-//    public SourceRule getDummyInstance() {
-//        switch (this) {
-//            case DirectorySource: return new DirectorySource();
-//            default: return null;
-//        }
-//    }
-//}
-//enum FilterType implements RuleEnum{
-//    FansubFilter,
-//    FilterByList;
-//    
-//    public FilterRule getDummyInstance() {
-//        switch (this) {
-//            case FansubFilter: return new FansubFilter();
-//            case FilterByList: return new FilterByList();
-//            default: return null;
-//        }
-//    }
-//}
-//enum DestinationType implements RuleEnum{
-//    DestinationNamedDirectories;
-//    
-//    public DestinationRule getDummyInstance() {
-//        switch (this) {
-//            case DestinationNamedDirectories: return new DestinationNamedDirectories();
-//            default: return null;
-//        }
-//    }
-//}
 }

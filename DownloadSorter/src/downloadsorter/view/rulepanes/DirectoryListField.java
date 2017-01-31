@@ -5,10 +5,13 @@
  */
 package downloadsorter.view.rulepanes;
 
+import downloadsorter.FXMain;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -18,23 +21,30 @@ import javafx.stage.Stage;
 
 
 public class DirectoryListField implements UIField {
+    @FXML
     FlowPane fieldPane;
+    @FXML
     Label fieldTitle;
+    @FXML
     TextArea txtDirectories;
+    @FXML
     Button browseButton;
     
     
     public DirectoryListField(String title, List<Path> locations) {
-        fieldPane = new FlowPane();
-        fieldTitle = new Label(title);
-        StringBuilder locString = new StringBuilder("");
-        locations.forEach(path -> locString.append(path.toString() + "\n"));
-        txtDirectories = new TextArea(locString.toString());
-        browseButton = new Button();
-        fieldPane.getChildren().add(fieldTitle);
-        fieldPane.getChildren().add(txtDirectories);
-        fieldPane.getChildren().add(browseButton);
-        browseButton.setOnAction(event -> {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(FXMain.class.getResource("view/rulepanes/DirectoryListField.fxml"));
+            fieldPane = (FlowPane) loader.load();
+            fieldTitle = (Label) loader.getNamespace().get("fieldTitle");
+            txtDirectories = (TextArea) loader.getNamespace().get("txtDirectories");
+            browseButton = (Button) loader.getNamespace().get("browseButton");
+            
+            fieldTitle.setText(title);
+            StringBuilder locString = new StringBuilder("");
+            locations.forEach(path -> locString.append(path.toString() + "\n"));
+            txtDirectories.setText(locString.toString());
+            browseButton.setOnAction(event -> {
                 DirectoryChooser dirChooser = new DirectoryChooser();
                 dirChooser.setTitle("Select base directory to move files");
                 Stage ownerWindow = new Stage();
@@ -46,6 +56,9 @@ public class DirectoryListField implements UIField {
                 oldText.append(filePath + "\n");
                 txtDirectories.setText(oldText.toString());
             });
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -55,7 +68,7 @@ public class DirectoryListField implements UIField {
 
     @Override
     public Class getType() {
-        return Path.class;
+        return List.class;
     }
 
     @Override
@@ -65,7 +78,7 @@ public class DirectoryListField implements UIField {
         for(String s: dirs) {
             sourceDirs.add(Paths.get(s));
         }
-        return dirs;
+        return sourceDirs;
     }
     
 }

@@ -5,30 +5,30 @@
  */
 package downloadsorter.view.rulepanes;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import javafx.scene.control.Button;
+import downloadsorter.FXMain;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 
 
 public class FlagField implements UIField {
     FlowPane fieldPane;
-    Label fieldTitle;
     CheckBox checkBox;
     
     
     public FlagField(String title, Boolean isSet) {
-        fieldPane = new FlowPane();
-        fieldTitle = new Label(title);
-        checkBox = new CheckBox();
-        checkBox.setSelected(isSet);
-        fieldPane.getChildren().add(fieldTitle);
-        fieldPane.getChildren().add(checkBox);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(FXMain.class.getResource("view/rulepanes/FlagField.fxml"));
+            fieldPane = (FlowPane) loader.load();
+            checkBox = (CheckBox) loader.getNamespace().get("checkBox");
+
+            checkBox.setText(title);
+            checkBox.setSelected(isSet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

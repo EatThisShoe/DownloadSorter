@@ -5,18 +5,12 @@
  */
 package downloadsorter.model;
 
-import downloadsorter.FXMain;
+import downloadsorter.view.rulepanes.UIField;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 
 /**
  *
@@ -72,5 +66,11 @@ public class FansubFilter implements FilterRule, Rule {
     @Override
     public String getFXMLPath() {
         return fxmlPath;
+    }
+
+    @Override
+    public UIField[] getFields() {
+        UIField[] fields = new UIField[0];
+        return fields;
     }
 }

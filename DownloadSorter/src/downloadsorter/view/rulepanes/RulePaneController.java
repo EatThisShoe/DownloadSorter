@@ -7,18 +7,7 @@ package downloadsorter.view.rulepanes;
 
 import downloadsorter.model.Rule;
 import java.lang.reflect.Constructor;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 
 /**
  *
@@ -49,11 +38,19 @@ public class RulePaneController<T extends Rule> {
             args[i] = fields[i].getInput();
         }
         T rule = null;
-        try {
-            Constructor con = ruleType.getConstructor(params);
-            rule = (T) con.newInstance(args);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (fields.length > 0) {
+            try {
+                Constructor con = ruleType.getConstructor(params);
+                rule = (T) con.newInstance(args);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            try {
+                rule = (T) ruleType.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return rule;
     }
