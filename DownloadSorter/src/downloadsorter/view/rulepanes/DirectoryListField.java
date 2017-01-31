@@ -5,44 +5,46 @@
  */
 package downloadsorter.view.rulepanes;
 
-import downloadsorter.model.DirectorySource;
-import downloadsorter.model.Rule;
-import java.io.File;
-import java.net.URL;
+import downloadsorter.FXMain;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author Eric
- */
-public class DirectorySourceController implements Initializable, RulePaneController {
+
+public class DirectoryListField implements UIField {
+    @FXML
+    FlowPane fieldPane;
+    @FXML
+    Label fieldTitle;
     @FXML
     TextArea txtDirectories;
     @FXML
     Button browseButton;
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        browseButton.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
+    
+    
+    public DirectoryListField(String title, List<Path> locations) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(FXMain.class.getResource("view/rulepanes/DirectoryListField.fxml"));
+            fieldPane = (FlowPane) loader.load();
+            fieldTitle = (Label) loader.getNamespace().get("fieldTitle");
+            txtDirectories = (TextArea) loader.getNamespace().get("txtDirectories");
+            browseButton = (Button) loader.getNamespace().get("browseButton");
+            
+            fieldTitle.setText(title);
+            StringBuilder locString = new StringBuilder("");
+            locations.forEach(path -> locString.append(path.toString() + "\n"));
+            txtDirectories.setText(locString.toString());
+            browseButton.setOnAction(event -> {
                 DirectoryChooser dirChooser = new DirectoryChooser();
                 dirChooser.setTitle("Select base directory to move files");
                 Stage ownerWindow = new Stage();
@@ -53,31 +55,30 @@ public class DirectorySourceController implements Initializable, RulePaneControl
                 }
                 oldText.append(filePath + "\n");
                 txtDirectories.setText(oldText.toString());
-            }
-        });
-    }    
+            });
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
-    public Rule getRule() {
-        
+    public FlowPane getFlowPane() {
+        return fieldPane;
+    }
+
+    @Override
+    public Class getType() {
+        return List.class;
+    }
+
+    @Override
+    public Object getInput() {
         String[] dirs = txtDirectories.getText().split("\n");
         List<Path> sourceDirs = new ArrayList<>();
         for(String s: dirs) {
             sourceDirs.add(Paths.get(s));
         }
-        return new DirectorySource(sourceDirs);
-    }
-
-    @Override
-    public void setRule(Rule rule) {
-        if(rule instanceof DirectorySource) {
-            DirectorySource r = (DirectorySource) rule;
-            StringBuilder listString = new StringBuilder();
-            for (Path p : r.getSourceFolders()) {
-                listString.append(p + "\n");
-            }
-            txtDirectories.setText(listString.toString());
-        }
+        return sourceDirs;
     }
     
 }

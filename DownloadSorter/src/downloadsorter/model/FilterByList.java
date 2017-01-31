@@ -5,6 +5,9 @@
  */
 package downloadsorter.model;
 
+import downloadsorter.view.rulepanes.FileField;
+import downloadsorter.view.rulepanes.FlagField;
+import downloadsorter.view.rulepanes.UIField;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -108,6 +111,15 @@ public class FilterByList implements FilterRule, Rule{
      */
     public Path getListLocation() {
         return listLocation;
+    }
+
+    @Override
+    public UIField[] getFields() {
+        UIField[] fields = new UIField[3];
+        fields[0] = new FileField("List Location", listLocation);
+        fields[1] = new FlagField("Include", include);
+        fields[2] = new FlagField("Use AbsolutePaths", useAbsolutePaths);
+        return fields;
     }
     
 }

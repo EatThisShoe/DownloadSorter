@@ -35,6 +35,7 @@ public class FXMain extends Application {
         Scene scene = new Scene(GUI);
         primaryStage.setTitle("File Sorter");
         primaryStage.setScene(scene);
+        primaryStage.setWidth(815);
         primaryStage.show();
     }
     

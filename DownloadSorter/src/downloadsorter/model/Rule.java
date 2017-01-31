@@ -5,7 +5,8 @@
  */
 package downloadsorter.model;
 
-import java.util.Map;
+import downloadsorter.view.rulepanes.UIField;
+import java.util.Map.Entry;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.util.Map;
 public interface Rule {
     String getFXMLPath();
     String getDescription();
-    //Map<String, Class> getFields();
+    UIField[] getFields();
     @Override
     String toString();
 }

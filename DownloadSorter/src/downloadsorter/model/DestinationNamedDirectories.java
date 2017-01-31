@@ -5,6 +5,8 @@
  */
 package downloadsorter.model;
 
+import downloadsorter.view.rulepanes.DirectoryField;
+import downloadsorter.view.rulepanes.UIField;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -73,5 +75,12 @@ public class DestinationNamedDirectories implements DestinationRule, Rule {
      */
     public void setBaseDirectory(Path baseDirectory) {
         this.baseDirectory = baseDirectory;
+    }
+
+    @Override
+    public UIField[] getFields() {
+        UIField[] fields = new UIField[1];
+        fields[0] = new DirectoryField("Directories", baseDirectory);
+        return fields;
     }
 }
