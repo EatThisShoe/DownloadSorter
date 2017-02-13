@@ -23,7 +23,6 @@ import java.util.List;
  * @author Eric
  */
 public class DirectorySource implements SourceRule, Rule {
-    final static String fxmlPath = "view/rulepanes/DirectorySource.fxml";
     List<Path> sourceFolders;
 
     public List<Path> getSourceFolders() {
@@ -85,11 +84,6 @@ public class DirectorySource implements SourceRule, Rule {
             s += p.toString() + ",";
         }
         return s;
-    }
-    
-    @Override
-    public String getFXMLPath() {
-        return fxmlPath;
     }
 
     @Override

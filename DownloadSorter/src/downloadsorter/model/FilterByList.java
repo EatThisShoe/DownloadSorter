@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
  * @author Eric
  */
 public class FilterByList implements FilterRule, Rule{
-    final static String fxmlPath ="view/rulepanes/FilterByList.fxml";
     private Boolean include;
     private Boolean useAbsolutePaths;
     private Path listLocation;
@@ -69,11 +68,6 @@ public class FilterByList implements FilterRule, Rule{
         Boolean inList = l.stream().anyMatch(listPath -> file.equals(listPath));
         //XNOR
         return inList == getInclude();
-    }
-
-    @Override
-    public String getFXMLPath() {
-        return fxmlPath;
     }
 
     @Override

@@ -13,7 +13,6 @@ import java.util.Map.Entry;
  * @author Eric
  */
 public interface Rule {
-    String getFXMLPath();
     String getDescription();
     UIField[] getFields();
     @Override

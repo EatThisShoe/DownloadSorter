@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  * @author Eric
  */
 public class FansubFilter implements FilterRule, Rule {
-    static final String fxmlPath = "view/rulepanes/FansubFilter.fxml";
 
     @Override
     public List<FileMetaData> filterFiles(List<FileMetaData> fansubs) {
@@ -60,12 +59,6 @@ public class FansubFilter implements FilterRule, Rule {
     @Override
     public String toString() {
         return (FansubFilter.class.getCanonicalName() + ",");
-    }
-    
-
-    @Override
-    public String getFXMLPath() {
-        return fxmlPath;
     }
 
     @Override

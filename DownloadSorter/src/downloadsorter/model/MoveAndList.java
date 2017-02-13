@@ -5,6 +5,7 @@
  */
 package downloadsorter.model;
 
+import downloadsorter.view.rulepanes.DirectoryField;
 import downloadsorter.view.rulepanes.FileField;
 import downloadsorter.view.rulepanes.FlagField;
 import downloadsorter.view.rulepanes.UIField;
@@ -13,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.file.StandardOpenOption.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +21,6 @@ import java.util.List;
  * @author Eric
  */
 public class MoveAndList implements Rule, DestinationRule {
-    private static final String fxmlPath = "view/rulepanes/MoveAndList.fxml";
     private Path listLocation;
     private Path destination;
     private Boolean useAbsolutePaths;
@@ -48,12 +47,7 @@ public class MoveAndList implements Rule, DestinationRule {
         copy = false;
         
     }
-
-    @Override
-    public String getFXMLPath() {
-        return fxmlPath;
-    }
-
+    
     @Override
     public String getDescription() {
         return "Move files and add them to a list";
@@ -68,7 +62,7 @@ public class MoveAndList implements Rule, DestinationRule {
                 Path fileName = startLocation.getFileName();
 
                 try {
-                    if (getCopy()) {
+                    if (copy) {
                         Files.copy(startLocation, destination.resolve(fileName));
                     } else {
                         Files.move(startLocation, destination.resolve(fileName));
@@ -135,7 +129,7 @@ public class MoveAndList implements Rule, DestinationRule {
     public UIField[] getFields() {
         UIField[] fields = new UIField[4];
         fields[0] = new FileField("List Location", listLocation);
-        fields[1] = new FileField("Destination", destination);
+        fields[1] = new DirectoryField("Destination", destination);
         fields[2] = new FlagField("Include", copy);
         fields[3] = new FlagField("Use AbsolutePaths", useAbsolutePaths);
         return fields;
