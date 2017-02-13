@@ -1,17 +1,10 @@
 FILTER
 new
 SOURCERULES
-downloadsorter.model.DirectorySource,
+downloadsorter.model.DirectorySource,D:\Torrents,
 FILTERRULES
 downloadsorter.model.FansubFilter,
 DESTINATIONRULES
-downloadsorter.model.MoveAndList,,,false,false,
-ENDFILTER
-
-FILTER
-new
-SOURCERULES
-FILTERRULES
-DESTINATIONRULES
+downloadsorter.model.MoveAndList,D:\oldfansubs.txt,D:\Torrents,false,false,
 ENDFILTER
 

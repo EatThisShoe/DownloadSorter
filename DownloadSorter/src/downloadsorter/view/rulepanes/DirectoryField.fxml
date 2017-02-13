@@ -9,6 +9,6 @@
    <children>
       <Label fx:id="fieldTitle" prefHeight="17.0" prefWidth="123.0" text="Label" />
       <TextField fx:id="txtDirectory" prefHeight="25.0" prefWidth="305.0" />
-      <Button fx:id="browseButton" mnemonicParsing="false" text="Button" />
+      <Button fx:id="browseButton" mnemonicParsing="false" text="Browse" />
    </children>
 </FlowPane>

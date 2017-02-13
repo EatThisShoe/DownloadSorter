@@ -17,7 +17,6 @@ import java.util.List;
  * @author Eric
  */
 public class DestinationNamedDirectories implements DestinationRule, Rule {
-    final static String fxmlPath = "view/rulepanes/DestinationNamedDirectories.fxml";
     private Path baseDirectory;
     
     public DestinationNamedDirectories(String[] fileInput) {
@@ -56,11 +55,6 @@ public class DestinationNamedDirectories implements DestinationRule, Rule {
         String s = DestinationNamedDirectories.class.getCanonicalName() + ",";
         s = s.concat(getBaseDirectory().toString() + ",");
         return s;
-    }
-
-    @Override
-    public String getFXMLPath() {
-        return fxmlPath;
     }
 
     /**

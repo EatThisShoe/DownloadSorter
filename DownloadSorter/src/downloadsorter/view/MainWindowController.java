@@ -50,6 +50,8 @@ public class MainWindowController implements Initializable {
     private Button addDestButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button runButton;
     
     private VBox ruleEditor;
     private RuleEditorController editor;
@@ -112,6 +114,10 @@ public class MainWindowController implements Initializable {
         addDestButton.setOnAction((event) -> {
             editor.addNewDestRule();
             writeOperations();
+        });
+        runButton.setOnAction(event -> {
+            FileSorter operations = new FileSorter(operationList.getItems());
+            operations.run();
         });
     }
     

@@ -22,7 +22,7 @@ public class FileField implements UIField {
     FlowPane fieldPane;
     Label fieldTitle;
     TextField txtLocation;
-    Button browseButton;
+    Button browseButton, createButton;
     
     
     public FileField(String title, Path location) {
@@ -33,6 +33,7 @@ public class FileField implements UIField {
             fieldTitle = (Label) loader.getNamespace().get("fieldTitle");
             txtLocation = (TextField) loader.getNamespace().get("txtDirectory");
             browseButton = (Button) loader.getNamespace().get("browseButton");
+            createButton = (Button) loader.getNamespace().get("createButton");
             
             fieldTitle.setText(title);
             txtLocation.setText(location.toString());
@@ -41,9 +42,17 @@ public class FileField implements UIField {
                 chooser.setTitle("Select the list file");
                 Stage ownerWindow = new Stage();
                 String filePath = "";
-                filePath = chooser.showOpenDialog(ownerWindow).toString();
+                filePath = chooser.showSaveDialog(ownerWindow).toString();
                 txtLocation.setText(filePath);
             });
+//            createButton.setOnAction(event -> {
+//                FileChooser chooser = new FileChooser();
+//                chooser.setTitle("Select the list file");
+//                Stage ownerWindow = new Stage();
+//                String filePath = "";
+//                filePath = chooser.showSaveDialog(ownerWindow).toString();
+//                txtLocation.setText(filePath);
+//            });
         } catch (Exception e) {
             e.printStackTrace();
         }

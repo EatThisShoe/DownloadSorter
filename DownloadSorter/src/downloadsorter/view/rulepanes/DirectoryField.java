@@ -43,7 +43,9 @@ public class DirectoryField implements UIField {
                 dirChooser.setTitle("Select base directory to move files");
                 Stage ownerWindow = new Stage();
                 final String filePath = dirChooser.showDialog(ownerWindow).toString();
-                txtLocation.setText(filePath);
+                if(filePath != null) {
+                    txtLocation.setText(filePath);
+                }
             });
         } catch (Exception e) {
             e.printStackTrace();
