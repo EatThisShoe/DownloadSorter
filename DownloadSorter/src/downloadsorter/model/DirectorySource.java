@@ -6,6 +6,7 @@
 package downloadsorter.model;
 
 import downloadsorter.view.rulepanes.DirectoryListField;
+import downloadsorter.view.rulepanes.FlagField;
 import downloadsorter.view.rulepanes.UIField;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -24,18 +25,12 @@ import java.util.List;
  */
 public class DirectorySource implements SourceRule, Rule {
     List<Path> sourceFolders;
-
-    public List<Path> getSourceFolders() {
-        return sourceFolders;
-    }
-
-    public void setSourceFolders(List<Path> sourceFolders) {
-        this.sourceFolders = sourceFolders;
-    }
+    Boolean searchSubDirs;
     
     public DirectorySource(String[] fromFile) {
         sourceFolders = new ArrayList<>();
-        for ( int i = 1; i < fromFile.length; i++) {
+        searchSubDirs = Boolean.parseBoolean(fromFile[1]);
+        for ( int i = 2; i < fromFile.length; i++) {
             Path p = Paths.get(fromFile[i]);
             if (Files.exists(p))
                 sourceFolders.add(p);
@@ -47,28 +42,41 @@ public class DirectorySource implements SourceRule, Rule {
         sourceFolders.add(p);
     }
     
-    public DirectorySource(List<Path> l) {
+    public DirectorySource(Boolean searchSubs, List<Path> l) {
+        searchSubDirs = searchSubs;
         sourceFolders = new ArrayList<>();
         sourceFolders.addAll(l);
     }
     
     public DirectorySource() {
         sourceFolders = new ArrayList<>();
+        searchSubDirs = true;
     }
   
 
     @Override
     public List<FileMetaData> getFiles() {
         List<FileMetaData> filesFound = new ArrayList<>();
-        PathGatherer walker = new PathGatherer();
         
-        sourceFolders.stream().forEach(dir -> {
-            try {
-                Files.walkFileTree(dir, walker);
-                walker.getList().stream()
-                        .forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(new FileMetaData(sourceFile));});
-            } catch(Exception e) {System.out.println(e.getMessage());}
-        });
+        if (searchSubDirs) {
+            sourceFolders.stream().forEach(dir -> {
+                try {
+                    PathGatherer walker = new PathGatherer();
+                    Files.walkFileTree(dir, walker);
+                    walker.getList().stream()
+                            .forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(new FileMetaData(sourceFile));});
+                } catch(Exception e) {System.out.println(e.getMessage());}
+            });
+        } else {
+            sourceFolders.stream().forEach(dir -> {
+                try {
+                    Files.list(dir).forEach(sourceFile -> {if(Files.isReadable(sourceFile)) filesFound.add(new FileMetaData(sourceFile));});
+                } catch (Exception e) {
+                    System.out.println("Unable to read files  in DirectorySource class\n");
+                    e.printStackTrace();
+                }
+            });
+        }
         return filesFound;
     }
     
@@ -80,6 +88,7 @@ public class DirectorySource implements SourceRule, Rule {
     @Override
     public String toString() {
         String s = DirectorySource.class.getCanonicalName() + ",";
+        s += searchSubDirs + ",";
         for(Path p: sourceFolders) {
             s += p.toString() + ",";
         }
@@ -88,12 +97,11 @@ public class DirectorySource implements SourceRule, Rule {
 
     @Override
     public UIField[] getFields() {
-        UIField[] fields = new UIField[1];
-        fields[0] = new DirectoryListField("Directories", sourceFolders);
+        UIField[] fields = new UIField[2];
+        fields[0] = new FlagField("Search subdirectories", searchSubDirs);
+        fields[1] = new DirectoryListField("Directories", sourceFolders);
         return fields;
     }
-    
-    
 }
 
 class PathGatherer extends SimpleFileVisitor<Path> {

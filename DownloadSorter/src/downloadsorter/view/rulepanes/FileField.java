@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -42,17 +41,17 @@ public class FileField implements UIField {
                 chooser.setTitle("Select the list file");
                 Stage ownerWindow = new Stage();
                 String filePath = "";
+                filePath = chooser.showOpenDialog(ownerWindow).toString();
+                txtLocation.setText(filePath);
+            });
+            createButton.setOnAction(event -> {
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle("Select the list file");
+                Stage ownerWindow = new Stage();
+                String filePath = "";
                 filePath = chooser.showSaveDialog(ownerWindow).toString();
                 txtLocation.setText(filePath);
             });
-//            createButton.setOnAction(event -> {
-//                FileChooser chooser = new FileChooser();
-//                chooser.setTitle("Select the list file");
-//                Stage ownerWindow = new Stage();
-//                String filePath = "";
-//                filePath = chooser.showSaveDialog(ownerWindow).toString();
-//                txtLocation.setText(filePath);
-//            });
         } catch (Exception e) {
             e.printStackTrace();
         }

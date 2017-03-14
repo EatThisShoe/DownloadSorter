@@ -79,6 +79,7 @@ public class MoveAndList implements Rule, DestinationRule {
                     listWriter.append(toWrite);
                 }
             }
+            listWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
