@@ -36,11 +36,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private Button addButton;
     @FXML
-    private Button addSourceButton;
-    @FXML
-    private Button addFilterButton;
-    @FXML
-    private Button addDestButton;
+    private Button addRuleButton;
     @FXML
     private Button deleteButton;
     @FXML
@@ -98,23 +94,11 @@ public class MainWindowController implements Initializable {
             operationList.getSelectionModel().selectFirst();
             writeOperations();
         });
-        addSourceButton.setOnAction((event) -> {
-            editor.addNewSourceRule();
+        addRuleButton.setOnAction((event) -> {
+            editor.addNewRule();
             writeOperations();
         });
-        addFilterButton.setOnAction((event) -> {
-            editor.addNewFilterRule();
-            writeOperations();
-        });
-        addDestButton.setOnAction((event) -> {
-            editor.addNewDestRule();
-            writeOperations();
-        });
-        runButton.setOnAction(event -> {
-            FileSorter operations = new FileSorter(operationList.getItems());
-            Thread t = new Thread(operations);
-            t.start();
-        });
+        
     }
     
     private void showRuleEditor() {

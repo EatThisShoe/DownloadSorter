@@ -37,11 +37,6 @@ public class DirectorySource implements Rule {
         }
     }
     
-    public DirectorySource(Path p) {
-        sourceFolders = new ArrayList<>();
-        sourceFolders.add(p);
-    }
-    
     public DirectorySource(Boolean searchSubs, List<Path> l) {
         searchSubDirs = searchSubs;
         sourceFolders = new ArrayList<>();

@@ -1,18 +1,13 @@
 FILTER
 Sort into series folders
-SOURCERULES
+RULES
 downloadsorter.model.DirectorySource,true,D:\Torrents,
-FILTERRULES
 downloadsorter.model.FansubFilter,
-DESTINATIONRULES
-downloadsorter.model.DestinationNamedDirectories,D:\Torrents,
+downloadsorter.model.DestinationNamedDirectories,D:\Anime,
 ENDFILTER
 
 FILTER
 new
-SOURCERULES
-downloadsorter.model.DirectorySource,true,,
-FILTERRULES
-DESTINATIONRULES
+RULES
 ENDFILTER
 

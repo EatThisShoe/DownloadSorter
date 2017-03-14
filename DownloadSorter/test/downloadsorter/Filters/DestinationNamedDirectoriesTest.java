@@ -33,6 +33,8 @@ public class DestinationNamedDirectoriesTest {
     Path testDir;
     Path destDir;
     List<FileMetaData> input;
+    List<Path> fromTestDir;
+    List<Path> fromDestDir;
     
     public DestinationNamedDirectoriesTest() {
         sampleDir = Paths.get("Filter test sample data", "sample source");
@@ -50,6 +52,10 @@ public class DestinationNamedDirectoriesTest {
     
     @Before
     public void setUp() {
+        fromTestDir = new ArrayList<>();
+        fromTestDir.add(testDir);
+        fromDestDir = new ArrayList<>();
+        fromDestDir.add(destDir);
         TestFolderCopier freshTestFolder = new TestFolderCopier(sampleDir, testDir);
         try {Files.walkFileTree(sampleDir, freshTestFolder);}
         catch(Exception exc) {System.out.println("Test Folder not copied cleanly: " + exc.getMessage());}
@@ -57,7 +63,7 @@ public class DestinationNamedDirectoriesTest {
         try {Files.createDirectory(destDir);}
         catch(Exception exc) {System.out.println("Destination directory not created: " + exc.getMessage());}
         
-        Rule sourceReader = new DirectorySource(testDir);
+        Rule sourceReader = new DirectorySource(true, fromTestDir);
         Rule readerFilter = new FansubFilter();
         input = readerFilter.process(sourceReader.process(new ArrayList<>()));
     }
@@ -80,7 +86,7 @@ public class DestinationNamedDirectoriesTest {
         System.out.println("moveFiles");
         DestinationNamedDirectories instance = new DestinationNamedDirectories(destDir);
         instance.process(input);
-        List<FileMetaData> outputFiles = new DirectorySource(destDir).process(new ArrayList<>());
+        List<FileMetaData> outputFiles = new DirectorySource(true, fromDestDir).process(new ArrayList<>());
         
         //input.stream().forEach(x -> System.out.println("in: " + x.getPath().toString()));
         //outputFiles.stream().forEach(x -> System.out.println(x.toString()));

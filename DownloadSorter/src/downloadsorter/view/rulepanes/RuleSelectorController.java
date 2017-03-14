@@ -11,12 +11,9 @@ import downloadsorter.view.RuleEditorController;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,10 +26,10 @@ import javafx.util.StringConverter;
  *
  * @author Eric
  */
-public class RuleSelectorController<T extends Rule> implements Initializable {
+public class RuleSelectorController implements Initializable {
 
     @FXML
-    ChoiceBox<T> ruleSelector;
+    ChoiceBox<Rule> ruleSelector;
     @FXML
     Button removeButton;
     @FXML
@@ -40,21 +37,21 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
     
     VBox rulePane;
     RuleEditorController parent;
-    RulePaneController<T> ruleControl;
+    RulePaneController ruleControl;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ruleSelector.setConverter(new StringConverter<T>() {
+        ruleSelector.setConverter(new StringConverter<Rule>() {
             @Override
-            public T fromString(String s) {
+            public Rule fromString(String s) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
             @Override
-            public String toString(T r) {
+            public String toString(Rule r) {
                 return r.getDescription();
             }
         });
-        ruleSelector.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends T> observable, T oldValue, T newValue) -> {
+        ruleSelector.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Rule> observable, Rule oldValue, Rule newValue) -> {
             setRulePane(newValue);
         });
         removeButton.setOnAction((event) -> {
@@ -79,16 +76,16 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
         ruleSelector.getSelectionModel().select(rule);
     }
     
-    public void setRulePane(T rule) {
+    public void setRulePane(Rule rule) {
         ruleControl = new RulePaneController(rule);
         basePane.getChildren().remove(rulePane);
         rulePane = ruleControl.getPane();
         basePane.getChildren().add(rulePane);
     }
 
-    public T saveRule() {
+    public Rule saveRule() {
         int index = ruleSelector.getSelectionModel().getSelectedIndex();
-        T rule = ruleControl.getRule();
+        Rule rule = ruleControl.getRule();
         ruleSelector.getItems().set(index, rule);
         ruleSelector.getSelectionModel().select(rule);
         return rule;

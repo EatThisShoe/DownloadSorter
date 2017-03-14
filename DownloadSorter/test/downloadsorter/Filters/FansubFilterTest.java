@@ -12,6 +12,7 @@ import downloadsorter.model.DirectorySource;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.After;
@@ -29,6 +30,7 @@ public class FansubFilterTest {
     Path sampleDir;
     Path testDir;
     List<FileMetaData> input;
+    List<Path> fromTestDir;
     
     public FansubFilterTest() {
         sampleDir = Paths.get("Filter test sample data", "sample source");
@@ -45,12 +47,14 @@ public class FansubFilterTest {
     
     @Before
     public void setUp() {
+        fromTestDir = new ArrayList<>();
+        fromTestDir.add(testDir);
         TestFolderCopier freshTestFolder = new TestFolderCopier(sampleDir, testDir);
         try {Files.walkFileTree(sampleDir, freshTestFolder);}
         catch(Exception exc) {System.out.println("Test Folder not copied cleanly: " + exc.getMessage());}
         
-        DirectorySource inputGenerator = new DirectorySource(testDir);
-        input = inputGenerator.getFiles();
+        DirectorySource inputGenerator = new DirectorySource(true, fromTestDir);
+        input = inputGenerator.process(new ArrayList<>());
     }
     
     @After
@@ -67,7 +71,7 @@ public class FansubFilterTest {
     public void testFilterFiles() {
         System.out.println("filterFiles: all files have match flag set.");
         FansubFilter instance = new FansubFilter();
-        List<FileMetaData> result = instance.filterFiles(input);
+        List<FileMetaData> result = instance.process(input);
         boolean fansubFormat = result.stream().allMatch(file -> file.getAttribute(FileAttributes.seriesName) != null);
         assertTrue(fansubFormat);
     }
@@ -76,7 +80,7 @@ public class FansubFilterTest {
     public void testFilterFilesForDirectories() {
         System.out.println("filterFiles: returned files do not contain directories.");
         FansubFilter instance = new FansubFilter();
-        List<FileMetaData> result = instance.filterFiles(input);
+        List<FileMetaData> result = instance.process(input);
         boolean hasDirectories = result.stream().anyMatch(file -> Files.isDirectory(file.getPath()));
         assertFalse(hasDirectories);
     }
@@ -85,7 +89,7 @@ public class FansubFilterTest {
     public void testFilterFilesForIntendedMatch() {
         System.out.println("filterFiles: 2 files match name Has Match.");
         FansubFilter instance = new FansubFilter();
-        List<FileMetaData> result = instance.filterFiles(input);
+        List<FileMetaData> result = instance.process(input);
         List<FileMetaData> matchingPair = result.stream()
                 .filter(file -> file.getAttribute(FileAttributes.seriesName).equals("Has Match"))
                 .collect(Collectors.toList());
@@ -96,7 +100,7 @@ public class FansubFilterTest {
     public void testFilterFilesForIntendedMatch2() {
         System.out.println("filterFiles: 2 files match in sub directories.");
         FansubFilter instance = new FansubFilter();
-        List<FileMetaData> result = instance.filterFiles(input);
+        List<FileMetaData> result = instance.process(input);
         List<FileMetaData> matchingPair = result.stream()
                 .filter(file -> file.getAttribute(FileAttributes.seriesName).equals("Nested Match"))
                 .collect(Collectors.toList());
@@ -107,7 +111,7 @@ public class FansubFilterTest {
     public void testFilterFilesForIntendedMatch3() {
         System.out.println("filterFiles: 2 files match across 2 separate directories.");
         FansubFilter instance = new FansubFilter();
-        List<FileMetaData> result = instance.filterFiles(input);
+        List<FileMetaData> result = instance.process(input);
         List<FileMetaData> matchingPair = result.stream()
                 .filter(file -> file.getAttribute(FileAttributes.seriesName).equals("Match in Other Dir"))
                 .collect(Collectors.toList());
