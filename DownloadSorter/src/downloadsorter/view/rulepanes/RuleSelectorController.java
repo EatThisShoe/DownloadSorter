@@ -67,10 +67,10 @@ public class RuleSelectorController<T extends Rule> implements Initializable {
         
     }
     
-    public void setComboBox(T rule) {
-        List<T> allRules = AllRules.getInstance().getRules(rule);
-        ObservableList<T> dummyInstances = FXCollections.observableArrayList(allRules);
-        for (T r: dummyInstances) {
+    public void setComboBox(Rule rule) {
+        List<Rule> allRules = AllRules.getInstance().getRules();
+        ObservableList<Rule> dummyInstances = FXCollections.observableArrayList(allRules);
+        for (Rule r: dummyInstances) {
             if (r.getClass().equals(rule.getClass())){
                 dummyInstances.set(dummyInstances.indexOf(r), rule);
             }

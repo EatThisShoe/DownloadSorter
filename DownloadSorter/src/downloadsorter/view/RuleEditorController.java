@@ -7,13 +7,10 @@ package downloadsorter.view;
 
 import downloadsorter.FXMain;
 import downloadsorter.model.DestinationNamedDirectories;
-import downloadsorter.model.DestinationRule;
 import downloadsorter.model.DirectorySource;
 import downloadsorter.model.FansubFilter;
 import downloadsorter.model.FileOperation;
-import downloadsorter.model.FilterRule;
 import downloadsorter.model.Rule;
-import downloadsorter.model.SourceRule;
 import downloadsorter.view.rulepanes.RuleSelectorController;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,9 +29,7 @@ import javafx.scene.layout.VBox;
 public class RuleEditorController implements Initializable {
     @FXML
     private VBox ruleList;
-    private ObservableList<RuleItem<SourceRule>> sources;
-    private ObservableList<RuleItem<FilterRule>> filters;
-    private ObservableList<RuleItem<DestinationRule>> destinations;
+    private ObservableList<RuleItem> rules;
     private MainWindowController mainWindow;
 
     /**
@@ -42,63 +37,37 @@ public class RuleEditorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        sources = FXCollections.observableArrayList();
-        filters = FXCollections.observableArrayList();
-        destinations = FXCollections.observableArrayList();
+        rules = FXCollections.observableArrayList();
     }    
     
     public void setFileOperation(FileOperation selectedOperation) {
         ruleList.getChildren().clear();
-        sources.clear();
-        filters.clear();
-        destinations.clear();
-        selectedOperation.getSources().forEach(rule -> sources.add(new RuleItem(rule)));
-        selectedOperation.getFilters().forEach(rule -> filters.add(new RuleItem(rule)));
-        selectedOperation.getDestinations().forEach(rule -> destinations.add(new RuleItem(rule)));
-        sources.forEach(ruleItem -> ruleList.getChildren().add(ruleItem.pane));
-        filters.forEach(ruleItem -> ruleList.getChildren().add(ruleItem.pane));
-        destinations.forEach(ruleItem -> ruleList.getChildren().add(ruleItem.pane));
+        rules.clear();
+        selectedOperation.getRules().forEach(rule -> rules.add(new RuleItem(rule)));
+        rules.forEach(ruleItem -> ruleList.getChildren().add(ruleItem.pane));
     }
 
     public void remove(VBox ruleSelector) {
         ruleList.getChildren().remove(ruleSelector);
-        sources.removeIf( r-> r.pane == ruleSelector);
-        filters.removeIf( r-> r.pane == ruleSelector);
-        destinations.removeIf( r-> r.pane == ruleSelector);
+        rules.removeIf( r-> r.pane == ruleSelector);
         mainWindow.updateSelectedOperation();
     }
 
     public void saveOperation(FileOperation displayedOperation) {
-            displayedOperation.setSources(saveRuleList(sources));
-            displayedOperation.setFilters(saveRuleList(filters));
-            displayedOperation.setDestinations(saveRuleList(destinations));
+            displayedOperation.setRules(saveRuleList(rules));
     }
 
-    private <T extends Rule> ObservableList<T> saveRuleList( ObservableList<RuleItem<T>> ruleItemList) {
+    private ObservableList<Rule> saveRuleList( ObservableList<RuleItem> ruleItemList) {
         ruleItemList.forEach((RuleItem r) -> r.rule = r.controller.saveRule());
-        ObservableList<T> ruleList = FXCollections.observableArrayList();
+        ObservableList<Rule> ruleList = FXCollections.observableArrayList();
         ruleItemList.forEach(r -> ruleList.add(r.rule));
         return ruleList;
     }
 
-    public void addNewSourceRule() {
+    public void addNewRule() {
         DirectorySource newRule = new DirectorySource();
         RuleItem newItem = new RuleItem(newRule);
-        sources.add(newItem);
-        ruleList.getChildren().add(newItem.pane);
-    }
-    
-    void addNewFilterRule() {
-        FansubFilter newRule = new FansubFilter();
-        RuleItem newItem = new RuleItem(newRule);
-        filters.add(newItem);
-        ruleList.getChildren().add(newItem.pane);
-    }
-    
-    void addNewDestRule() {
-        DestinationNamedDirectories newRule = new DestinationNamedDirectories();
-        RuleItem newItem = new RuleItem(newRule);
-        destinations.add(newItem);
+        rules.add(newItem);
         ruleList.getChildren().add(newItem.pane);
     }
 
@@ -106,11 +75,11 @@ public class RuleEditorController implements Initializable {
         mainWindow = main;
     }
     
-    class RuleItem<T extends Rule> {
-        public T rule;
+    class RuleItem {
+        public Rule rule;
         public VBox pane;
         public RuleSelectorController controller;
-        RuleItem(T rule) {
+        RuleItem(Rule rule) {
             this.rule = rule;
             try {
                 FXMLLoader loader = new FXMLLoader();

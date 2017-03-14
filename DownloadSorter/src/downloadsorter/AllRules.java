@@ -5,10 +5,7 @@
  */
 package downloadsorter;
 
-import downloadsorter.model.DestinationRule;
-import downloadsorter.model.FilterRule;
 import downloadsorter.model.Rule;
-import downloadsorter.model.SourceRule;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,47 +19,18 @@ import java.util.stream.Collectors;
  */
 public class AllRules {
     static Path ruleDir = Paths.get("./src/downloadsorter/model");
-    List<SourceRule> sourceRules;
-    List<FilterRule> filterRules;
-    List<DestinationRule> destRules;
+    List<Rule> rules;
     
     private AllRules() {
-        sourceRules = new ArrayList<>();
-        filterRules = new ArrayList<>();
-        destRules = new ArrayList<>();
+        rules = new ArrayList<>();
     }
     
-    public <T> List<T> getRules(T rule) {
-        List<T> rules = new ArrayList<>();
-        if (rule instanceof SourceRule) {
-            getSourceRules().forEach(r -> rules.add((T) r));
-        } else if (rule instanceof FilterRule) {
-            getFilterRules().forEach(r -> rules.add((T) r));
-        } else if (rule instanceof DestinationRule) {
-            getDestinationRules().forEach(r -> rules.add((T) r));
+    public List<Rule> getRules() {
+        List<Rule> rules = new ArrayList<>();
+        if (rules.isEmpty()) {
+            rules = getRuleList(Rule.class);
         }
         return rules;
-    }
-    
-    public List<SourceRule> getSourceRules() {
-        if(sourceRules.isEmpty()) {
-            sourceRules = getRuleList(SourceRule.class);
-        }
-        return sourceRules;
-    }
-    
-    public List<FilterRule> getFilterRules() {
-        if(filterRules.isEmpty()) {
-            filterRules = getRuleList(FilterRule.class);
-        }
-        return filterRules;
-    }
-    
-    public List<DestinationRule> getDestinationRules() {
-        if(destRules.isEmpty()) {
-            destRules = getRuleList(DestinationRule.class);
-        }
-        return destRules;
     }
     
     private <T extends Rule> List<T> getRuleList(Class<T> ruleType) {
