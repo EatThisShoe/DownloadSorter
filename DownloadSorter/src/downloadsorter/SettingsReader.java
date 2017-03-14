@@ -11,6 +11,7 @@ import downloadsorter.Factories.SourceFactory;
 import downloadsorter.model.DestinationRule;
 import downloadsorter.model.FileOperation;
 import downloadsorter.model.FilterRule;
+import downloadsorter.model.Rule;
 import downloadsorter.model.SourceRule;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,30 +46,28 @@ public class SettingsReader {
                 while (itr.hasNext()) {
                     String line = itr.next();
                     if(line.equals("FILTER")) {
-                        List<SourceRule> sources = new ArrayList();
-                        List<FilterRule> filters = new ArrayList();
-                        List<DestinationRule> destinations = new ArrayList();
+                        List<Rule> rules = new ArrayList();
                         
                         String name = itr.next();
                         while (itr.hasNext() && !line.equals("ENDFILTER")) {
                             line = itr.next();
                             
-                            SourceRule source = SourceFactory.createSourceRule(line);
+                            Rule source = SourceFactory.createSourceRule(line);
                             if (source != null)
-                                sources.add(source);
+                                rules.add(source);
                             else {
-                                FilterRule filter = FilterRuleFactory.createFilterRule(line);
+                                Rule filter = FilterRuleFactory.createFilterRule(line);
                                 if (filter != null) {
-                                    filters.add(filter);
+                                    rules.add(filter);
                                 } else {
-                                    DestinationRule dest = DestinationFactory.createDestinationRule(line);
+                                    Rule dest = DestinationFactory.createDestinationRule(line);
                                     if (dest != null)
-                                        destinations.add(dest);
+                                        rules.add(dest);
                                 }
                             }
                         }
                         //if (!(sources.isEmpty() || filters.isEmpty() || destinations.isEmpty())) {
-                            FileOperation f = new FileOperation(sources, filters, destinations, name);
+                            FileOperation f = new FileOperation(rules, name);
                             filtersFromFile.add(f);
                         //}
                     }
