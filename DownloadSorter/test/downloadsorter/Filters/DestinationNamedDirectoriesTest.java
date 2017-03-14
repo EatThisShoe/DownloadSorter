@@ -6,8 +6,6 @@
 package downloadsorter.Filters;
 
 import downloadsorter.model.FileMetaData;
-import downloadsorter.model.FilterRule;
-import downloadsorter.model.SourceRule;
 import downloadsorter.model.FansubFilter;
 import downloadsorter.model.DestinationNamedDirectories;
 import downloadsorter.model.DirectorySource;
