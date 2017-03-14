@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Eric
  */
-public class DirectorySource implements SourceRule, Rule {
+public class DirectorySource implements Rule {
     List<Path> sourceFolders;
     Boolean searchSubDirs;
     
@@ -55,8 +55,8 @@ public class DirectorySource implements SourceRule, Rule {
   
 
     @Override
-    public List<FileMetaData> getFiles() {
-        List<FileMetaData> filesFound = new ArrayList<>();
+    public List<FileMetaData> process(List<FileMetaData> previousFiles) {
+        List<FileMetaData> filesFound = previousFiles;
         
         if (searchSubDirs) {
             sourceFolders.stream().forEach(dir -> {

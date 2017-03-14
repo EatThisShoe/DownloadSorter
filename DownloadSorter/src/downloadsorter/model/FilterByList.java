@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  *
  * @author Eric
  */
-public class FilterByList implements FilterRule, Rule{
+public class FilterByList implements Rule{
     private Boolean include;
     private Boolean useAbsolutePaths;
     private Path listLocation;
@@ -43,7 +43,7 @@ public class FilterByList implements FilterRule, Rule{
     }
 
     @Override
-    public List<FileMetaData> filterFiles(List<FileMetaData> inputList) {
+    public List<FileMetaData> process(List<FileMetaData> inputList) {
         List<FileMetaData> outputList = new ArrayList<>();
         try {
             List<String> lines = Files.readAllLines(getListLocation());

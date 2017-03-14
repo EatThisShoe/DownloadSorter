@@ -6,6 +6,7 @@
 package downloadsorter;
 
 import downloadsorter.model.FileOperation;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import javafx.collections.ObservableList;
 import org.junit.After;
@@ -51,6 +52,15 @@ public class SettingsReaderTest {
         int result = set.size();
         System.out.println(result);
         assertEquals(result, 0);
+    }
+    
+    @Test
+    public void testOldFormatSettings() {
+        System.out.println("readSettingsFile: Test old settings file from Rule consolidation");
+        Path settingsFile = Paths.get("settings Old.txt");
+        SettingsReader instance = new SettingsReader(settingsFile);
+        ObservableList<FileOperation> fileOps = instance.readSettingsFile();
+        assertEquals(fileOps.size(), 2);
     }
     
 }

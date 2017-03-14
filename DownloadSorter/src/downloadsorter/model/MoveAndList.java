@@ -14,13 +14,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.file.StandardOpenOption.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author Eric
  */
-public class MoveAndList implements Rule, DestinationRule {
+public class MoveAndList implements Rule{
     private Path listLocation;
     private Path destination;
     private Boolean useAbsolutePaths;
@@ -54,7 +55,8 @@ public class MoveAndList implements Rule, DestinationRule {
     }
 
     @Override
-    public void moveFiles(List<FileMetaData> l) {
+    public List<FileMetaData> process(List<FileMetaData> l) {
+        ArrayList<FileMetaData> successful = new ArrayList<>();
         try {
             BufferedWriter listWriter = Files.newBufferedWriter(listLocation, CREATE, APPEND);
             for(FileMetaData file: l) {
@@ -67,6 +69,7 @@ public class MoveAndList implements Rule, DestinationRule {
                     } else {
                         Files.move(startLocation, destination.resolve(fileName));
                     }
+                    successful.add(file);
                 } catch(Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -83,6 +86,7 @@ public class MoveAndList implements Rule, DestinationRule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return successful;
     }
     
     @Override

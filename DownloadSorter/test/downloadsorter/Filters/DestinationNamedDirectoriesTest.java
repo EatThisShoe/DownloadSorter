@@ -11,9 +11,11 @@ import downloadsorter.model.SourceRule;
 import downloadsorter.model.FansubFilter;
 import downloadsorter.model.DestinationNamedDirectories;
 import downloadsorter.model.DirectorySource;
+import downloadsorter.model.Rule;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -55,9 +57,9 @@ public class DestinationNamedDirectoriesTest {
         try {Files.createDirectory(destDir);}
         catch(Exception exc) {System.out.println("Destination directory not created: " + exc.getMessage());}
         
-        SourceRule sourceReader = new DirectorySource(testDir);
-        FilterRule readerFilter = new FansubFilter();
-        input = readerFilter.filterFiles(sourceReader.getFiles());
+        Rule sourceReader = new DirectorySource(testDir);
+        Rule readerFilter = new FansubFilter();
+        input = readerFilter.process(sourceReader.process(new ArrayList<>()));
     }
     
     @After
@@ -77,8 +79,8 @@ public class DestinationNamedDirectoriesTest {
     public void testMoveFiles() {
         System.out.println("moveFiles");
         DestinationNamedDirectories instance = new DestinationNamedDirectories(destDir);
-        instance.moveFiles(input);
-        List<FileMetaData> outputFiles = new DirectorySource(destDir).getFiles();
+        instance.process(input);
+        List<FileMetaData> outputFiles = new DirectorySource(destDir).process(new ArrayList<>());
         
         //input.stream().forEach(x -> System.out.println("in: " + x.getPath().toString()));
         //outputFiles.stream().forEach(x -> System.out.println(x.toString()));

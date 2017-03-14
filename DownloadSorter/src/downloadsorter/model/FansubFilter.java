@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
  *
  * @author Eric
  */
-public class FansubFilter implements FilterRule, Rule {
+public class FansubFilter implements Rule {
 
     @Override
-    public List<FileMetaData> filterFiles(List<FileMetaData> fansubs) {
+    public List<FileMetaData> process(List<FileMetaData> fansubs) {
         return fansubs.stream()
                     .map(f -> setSeriesName(f))
                     .filter(f -> f.getAttribute(FileAttributes.seriesName) != null)
