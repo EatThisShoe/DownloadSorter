@@ -6,13 +6,13 @@
 package downloadsorter;
 
 import downloadsorter.model.DestinationNamedDirectories;
-import downloadsorter.model.DestinationRule;
+import downloadsorter.model.Rule;
 import downloadsorter.model.DirectorySource;
 import downloadsorter.model.FansubFilter;
 import downloadsorter.model.FilterByList;
-import downloadsorter.model.FilterRule;
+import downloadsorter.model.Rule;
 import downloadsorter.model.MoveAndList;
-import downloadsorter.model.SourceRule;
+import downloadsorter.model.Rule;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -28,36 +28,19 @@ public class AllRulesTest {
     }
 
     @Test
-    public void testGetSourceRules() {
-        System.out.println("getSourceRules");
+    public void testGetRules() {
+        System.out.println("getRules");
         AllRules instance = AllRules.getInstance();
-        SourceRule directorySource = new DirectorySource();
-        List<SourceRule> result = instance.getSourceRules();
-        Boolean hasDirectorySource = result.stream().anyMatch(rule -> rule.getClass() == directorySource.getClass());
+        Rule directorySource = new DirectorySource();
+        Rule filterByList = new FilterByList();
+        Rule fansubFilter = new FansubFilter();
+        Rule namedDir = new DestinationNamedDirectories();
+        Rule moveList = new MoveAndList();
+        List<Rule> result = instance.getRules();
         assertTrue(result.size() > 0);
-        assertTrue(hasDirectorySource);
-    }
-
-    @Test
-    public void testGetFilterRules() {
-        System.out.println("getFilterRules");
-        AllRules instance = AllRules.getInstance();
-        FilterRule filterByList = new FilterByList();
-        FilterRule fansubFilter = new FansubFilter();
-        List<FilterRule> result = instance.getFilterRules();
-        assertTrue(result.size() > 0);
+        assertTrue(result.stream().anyMatch(rule -> rule.getClass() == directorySource.getClass()));
         assertTrue(result.stream().anyMatch(rule -> rule.getClass() == filterByList.getClass()));
         assertTrue(result.stream().anyMatch(rule -> rule.getClass() == fansubFilter.getClass()));
-    }
-
-    @Test
-    public void testGetDestinationRules() {
-        System.out.println("getDestinationRules");
-        AllRules instance = AllRules.getInstance();
-        DestinationRule namedDir = new DestinationNamedDirectories();
-        DestinationRule moveList = new MoveAndList();
-        List<DestinationRule> result = instance.getDestinationRules();
-        assertTrue(result.size() > 0);
         assertTrue(result.stream().anyMatch(rule -> rule.getClass() == namedDir.getClass()));
         assertTrue(result.stream().anyMatch(rule -> rule.getClass() == moveList.getClass()));
     }

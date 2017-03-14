@@ -10,6 +10,7 @@ import downloadsorter.model.DirectorySource;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -25,6 +26,8 @@ import static org.junit.Assert.*;
 public class DirectorySourceTest {
     Path sampleDir;
     Path testDir;
+    ArrayList<FileMetaData> blankList;
+    ArrayList<Path> fromTestDir;
     
     public DirectorySourceTest() {
         sampleDir = Paths.get("Filter test sample data", "sample source");
@@ -41,6 +44,9 @@ public class DirectorySourceTest {
     
     @Before
     public void setUp() {
+        blankList = new ArrayList<>();
+        fromTestDir = new ArrayList<>();
+        fromTestDir.add(testDir);
         TestFolderCopier freshTestFolder = new TestFolderCopier(sampleDir, testDir);
         try {Files.walkFileTree(sampleDir, freshTestFolder);}
         catch(Exception exc) {System.out.println("Test Folder not copied cleanly: " + exc.getMessage());}
@@ -59,16 +65,16 @@ public class DirectorySourceTest {
     @Test
     public void testGetFiles() {
         System.out.println("getFiles: List not empty when directory is not empty.");
-        DirectorySource instance = new DirectorySource(testDir);
-        List<FileMetaData> result = instance.getFiles();
+        DirectorySource instance = new DirectorySource(true, fromTestDir);
+        List<FileMetaData> result = instance.process(blankList);
         assertTrue(result.size() > 0);
     }
         
     @Test
     public void testGetFilesMore() {
         System.out.println("getFiles: List files exist");
-        DirectorySource instance2 = new DirectorySource(testDir);
-        List<FileMetaData> result2 = instance2.getFiles();
+        DirectorySource instance2 = new DirectorySource(true, fromTestDir);
+        List<FileMetaData> result2 = instance2.process(blankList);
         boolean filesExist = result2.stream()
                             .allMatch(p -> Files.exists(p.getPath()));
         assertTrue(filesExist);

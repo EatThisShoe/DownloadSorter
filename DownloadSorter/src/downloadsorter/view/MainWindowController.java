@@ -8,24 +8,17 @@ package downloadsorter.view;
 import downloadsorter.FXMain;
 import downloadsorter.FileSorter;
 import downloadsorter.model.FileOperation;
-import java.awt.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.TextFieldListCell;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 /**
@@ -43,11 +36,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private Button addButton;
     @FXML
-    private Button addSourceButton;
-    @FXML
-    private Button addFilterButton;
-    @FXML
-    private Button addDestButton;
+    private Button addRuleButton;
     @FXML
     private Button deleteButton;
     @FXML
@@ -84,7 +73,9 @@ public class MainWindowController implements Initializable {
                         editor.saveOperation(oldValue);
                         writeOperations();
                     }
-                    editor.setFileOperation(newValue);
+                    if(newValue != null) {
+                        editor.setFileOperation(newValue);
+                    }
                 }
         );
         startButton.setOnAction(event -> {
@@ -103,22 +94,11 @@ public class MainWindowController implements Initializable {
             operationList.getSelectionModel().selectFirst();
             writeOperations();
         });
-        addSourceButton.setOnAction((event) -> {
-            editor.addNewSourceRule();
+        addRuleButton.setOnAction((event) -> {
+            editor.addNewRule();
             writeOperations();
         });
-        addFilterButton.setOnAction((event) -> {
-            editor.addNewFilterRule();
-            writeOperations();
-        });
-        addDestButton.setOnAction((event) -> {
-            editor.addNewDestRule();
-            writeOperations();
-        });
-        runButton.setOnAction(event -> {
-            FileSorter operations = new FileSorter(operationList.getItems());
-            operations.run();
-        });
+        
     }
     
     private void showRuleEditor() {

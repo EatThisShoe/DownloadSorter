@@ -13,12 +13,12 @@ import javafx.scene.layout.VBox;
  *
  * @author Eric
  */
-public class RulePaneController<T extends Rule> {
+public class RulePaneController {
     VBox rulePane;
     Class ruleType;
     UIField[] fields;
     
-    public RulePaneController(T rule) {
+    public RulePaneController(Rule rule) {
         rulePane = new VBox();
         ruleType = rule.getClass();
         setRule(rule);
@@ -28,7 +28,7 @@ public class RulePaneController<T extends Rule> {
         return rulePane;
     }
     
-    public T getRule() {
+    public Rule getRule() {
         Class[] params = new Class[fields.length];
         for(int i = 0; i < fields.length; i++) {
             params[i] = fields[i].getType();
@@ -37,17 +37,17 @@ public class RulePaneController<T extends Rule> {
         for(int i = 0; i< fields.length; i++) {
             args[i] = fields[i].getInput();
         }
-        T rule = null;
+        Rule rule = null;
         if (fields.length > 0) {
             try {
                 Constructor con = ruleType.getConstructor(params);
-                rule = (T) con.newInstance(args);
+                rule = (Rule) con.newInstance(args);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         } else {
             try {
-                rule = (T) ruleType.newInstance();
+                rule = (Rule) ruleType.newInstance();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -55,7 +55,7 @@ public class RulePaneController<T extends Rule> {
         return rule;
     }
      
-    void setRule(T rule) {
+    void setRule(Rule rule) {
         rulePane.getChildren().clear();
         ruleType = rule.getClass();
         fields = rule.getFields();

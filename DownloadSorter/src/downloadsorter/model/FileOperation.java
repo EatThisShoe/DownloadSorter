@@ -15,69 +15,35 @@ import javafx.collections.ObservableList;
  * @author Eric
  */
 public class FileOperation {
-    private ObservableList<SourceRule> sources;
-    private ObservableList<FilterRule> filters;
-    private ObservableList<DestinationRule> destinations;
+    private ObservableList<Rule> rules;
     private String name;
     
-    public FileOperation(List<SourceRule> s, List<FilterRule> f, List<DestinationRule> d, String name) {
-        sources = FXCollections.observableArrayList(s);
-        filters = FXCollections.observableArrayList(f);
-        destinations = FXCollections.observableArrayList(d);
+    public FileOperation(List<Rule> rules, String name) {
+        this.rules = FXCollections.observableArrayList(rules);
         this.name = name;
     }
     
     public FileOperation() {
         name = "new";
-        sources = FXCollections.observableArrayList();
-        filters = FXCollections.observableArrayList();
-        destinations = FXCollections.observableArrayList();
+        rules = FXCollections.observableArrayList();
     }
     
     public void FilterFiles() {
         List files = new ArrayList();
-        for(SourceRule s : getSources()){
-            files.addAll(s.getFiles());
-        }
-        for(FilterRule f : getFilters()) {
-            files = f.filterFiles(files);
-        }
-        for(DestinationRule d : getDestinations()) {
-            d.moveFiles(files);
+        for(Rule r : rules){
+            files = r.process(files);
         }
     }
     
     public String stringForFile() {
-        String srcStr = "";
-        for(SourceRule src: getSources())
-            srcStr += src.toString() + "\n";
-        String filtStr = "";
-        for(FilterRule filt : getFilters())
-            filtStr += filt.toString() + "\n";
-        String destStr = "";
-        for(DestinationRule dest : getDestinations())
-            destStr += dest.toString() + "\n";
+        String str = "";
+        for(Rule r: rules)
+            str += r.toString() + "\n";
         return ("FILTER\n"
                 + getName() + "\n"
-                + "SOURCERULES\n"
-                + srcStr
-                + "FILTERRULES\n"
-                + filtStr
-                + "DESTINATIONRULES\n"
-                + destStr
+                + "RULES\n"
+                + str
                 + "ENDFILTER\n");
-    }
-    
-    public String[] getSourceParamaters() {
-        return getSources().toString().split(",");
-    }
-    
-    public String[] getFilterParameters() {
-        return getFilters().toString().split(",");
-    }
-    
-    public String[] getDestinationParameters() {
-        return getDestinations().toString().split(",");
     }
     
     public String toString() {
@@ -87,45 +53,16 @@ public class FileOperation {
     /**
      * @return the sources
      */
-    public ObservableList<SourceRule> getSources() {
-        return sources;
+    public ObservableList<Rule> getRules() {
+        return rules;
     }
 
     /**
      * @param sources the sources to set
      */
-    public void setSources(ObservableList<SourceRule> sources) {
-        this.sources = sources;
+    public void setRules(ObservableList<Rule> rules) {
+        this.rules = rules;
     }
-
-    /**
-     * @return the filters
-     */
-    public ObservableList<FilterRule> getFilters() {
-        return filters;
-    }
-
-    /**
-     * @param filters the filters to set
-     */
-    public void setFilters(ObservableList<FilterRule> filters) {
-        this.filters = filters;
-    }
-
-    /**
-     * @return the destinations
-     */
-    public ObservableList<DestinationRule> getDestinations() {
-        return destinations;
-    }
-
-    /**
-     * @param destinations the destinations to set
-     */
-    public void setDestinations(ObservableList<DestinationRule> destinations) {
-        this.destinations = destinations;
-    }
-
     /**
      * @return the name
      */

@@ -10,13 +10,14 @@ import downloadsorter.view.rulepanes.UIField;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author Eric
  */
-public class DestinationNamedDirectories implements DestinationRule, Rule {
+public class DestinationNamedDirectories implements Rule {
     private Path baseDirectory;
     
     public DestinationNamedDirectories(String[] fileInput) {
@@ -32,17 +33,22 @@ public class DestinationNamedDirectories implements DestinationRule, Rule {
     }
 
     @Override
-    public void moveFiles(List<FileMetaData> l) {
+    public List<FileMetaData> process(List<FileMetaData> l) {
+        List<FileMetaData> successful = new ArrayList<>();
         for (FileMetaData file: l){
-            Path seriesFolder = getBaseDirectory().resolve(file.getAttribute(FileAttributes.seriesName));
+            Path seriesFolder = baseDirectory.resolve(file.getAttribute(FileAttributes.seriesName));
             if(!Files.exists(seriesFolder)) {
                 try {Files.createDirectory(seriesFolder);}
-                catch(Exception e) {System.out.println(e.getMessage());}
+                catch(Exception e) {System.out.println("Error creating directory: " + e.getMessage());}
             }
             Path inDir = seriesFolder.resolve(file.getPath().getFileName());
-            try {Files.move(file.getPath(), inDir);}
-            catch(Exception e) {System.out.println(e.getMessage());}
+            try {
+                Files.move(file.getPath(), inDir);
+                successful.add(file);
+            }
+            catch(Exception e) {System.out.println("Error moving file: " + e.getMessage());}
         }
+        return successful;
     }
     
     @Override
@@ -74,7 +80,7 @@ public class DestinationNamedDirectories implements DestinationRule, Rule {
     @Override
     public UIField[] getFields() {
         UIField[] fields = new UIField[1];
-        fields[0] = new DirectoryField("Directories", baseDirectory);
+        fields[0] = new DirectoryField("Base Directory", baseDirectory);
         return fields;
     }
 }

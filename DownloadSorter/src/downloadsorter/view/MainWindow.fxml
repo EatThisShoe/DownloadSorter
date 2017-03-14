@@ -30,13 +30,10 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="500.0">
                            <children>
-                              <Button fx:id="startButton" layoutX="25.0" layoutY="2.0" mnemonicParsing="false" text="Start Operations" />
-                              <Button fx:id="addButton" layoutX="128.0" layoutY="2.0" mnemonicParsing="false" text="Add File Operation" />
-                              <Button fx:id="addSourceButton" layoutX="-1.0" layoutY="25.0" mnemonicParsing="false" text="Add Source Rule" />
-                              <Button fx:id="addDestButton" layoutX="218.0" layoutY="25.0" mnemonicParsing="false" text="Add Destination" />
-                              <Button fx:id="addFilterButton" layoutX="114.0" layoutY="25.0" mnemonicParsing="false" text="Add Filter Rule" />
-                              <Button fx:id="deleteButton" layoutX="262.0" layoutY="2.0" mnemonicParsing="false" text="Delete File Operation" />
-                              <Button fx:id="runButton" layoutX="402.0" layoutY="25.0" mnemonicParsing="false" text="Run Operations" />
+                              <Button fx:id="startButton" layoutX="146.0" layoutY="25.0" mnemonicParsing="false" text="Start Operations" />
+                              <Button fx:id="addButton" layoutX="14.0" layoutY="2.0" mnemonicParsing="false" text="Add File Operation" />
+                              <Button fx:id="addRuleButton" layoutX="14.0" layoutY="25.0" mnemonicParsing="false" text="Add Rule" />
+                              <Button fx:id="deleteButton" layoutX="146.0" layoutY="2.0" mnemonicParsing="false" text="Delete File Operation" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

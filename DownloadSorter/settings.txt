@@ -1,10 +1,13 @@
 FILTER
-new
-SOURCERULES
-downloadsorter.model.DirectorySource,D:\Torrents,
-FILTERRULES
+Sort into series folders
+RULES
+downloadsorter.model.DirectorySource,true,D:\Torrents,
 downloadsorter.model.FansubFilter,
-DESTINATIONRULES
-downloadsorter.model.MoveAndList,D:\oldfansubs.txt,D:\Torrents,false,false,
+downloadsorter.model.DestinationNamedDirectories,D:\Anime,
+ENDFILTER
+
+FILTER
+new
+RULES
 ENDFILTER
 

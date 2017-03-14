@@ -6,13 +6,14 @@
 package downloadsorter.model;
 
 import downloadsorter.view.rulepanes.UIField;
-import java.util.Map.Entry;
+import java.util.List;
 
 /**
  *
  * @author Eric
  */
 public interface Rule {
+    public List<FileMetaData> process(List<FileMetaData> l);
     String getDescription();
     UIField[] getFields();
     @Override
